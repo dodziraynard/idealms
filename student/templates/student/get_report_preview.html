@@ -1,0 +1,105 @@
+<h3>REPORT PREVIEW</h3>
+<br>
+
+<div class="report-preview h-scroll">
+    <h4>STUDENT: {{teacher_remarks.student.name|upper}}</h4>
+    <h4>CURRENT CLASS: {{teacher_remarks.student.student_class.name|upper}}</h4>
+    <h4 class="text text-center">CORE SUBJECTS</h4>
+    {% if core_records %}
+    <table class="table table-striped table-hover">
+        <thead class="">
+            <tr>
+                <th><h5>SUBJECT</h5></th>
+                <th><h5>CLASS SCORE</h5></th>
+                <th><h5>EXAM SCORE</h5></th>
+                <th><h5>TOTAL</h5></th>
+                <th><h5>GRADE</h5></th>
+                <th><h5>REMARK</h5></th>
+                <th><h5>POSITION</h5></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in core_records %}
+            <tr>
+                <td><h5>{{record.subject.name|upper}}</h5></td>
+                <td><h5>{{record.class_score}}</h5></td>
+                <td><h5>{{record.exam_score}}</h5></td>
+                <td><h5>{{record.total}}</h5></td>
+                <td><h5>{{record.grade}}</h5></td>
+                <td><h5>{{record.remark}}</h5></td>
+                <td><h5>{{record.position}}</h5></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    
+    <h4 class="text text-center">ELECTIVE SUBJECTS</h4 C>
+        {% if elective_records %}
+        <table class="table table-striped table-hover table-responsive h-scroll">
+        <thead class="">
+            <tr>
+                <th><h5>SUBJECT</h5></th>
+                <th><h5>CLASS SCORE</h5></th>
+                <th><h5>EXAM SCORE</h5></th>
+                <th><h5>TOTAL</h5></th>
+                <th><h5>GRADE</h5></th>
+                <th><h5>REMARK</h5></th>
+                <th><h5>POSITION</h5></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in elective_records %}
+            <tr>
+                <td><h5>{{record.subject.name|upper}}</h5></td>
+                <td><h5>{{record.class_score}}</h5></td>
+                <td><h5>{{record.exam_score}}</h5></td>
+                <td><h5>{{record.total}}</h5></td>
+                <td><h5>{{record.grade}}</h5></td>
+                <td><h5>{{record.remark}}</h5></td>
+                <td><h5>{{record.position}}</h5></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <br>
+    <br>
+    <div class="report-details">
+        <table class="table">        
+            <tbody>
+                <tr>
+                    <td><h5><b>ATTENDANCE</b></h5></td>
+                    <td><h5>{{teacher_remarks.attendance}}  out of {{teacher_remarks.total_attendance}}</h5></td>
+                </tr>
+
+                <tr>
+                    <td><h5><b>ATTITUDE</b></h5></td>
+                    <td><h5>{{teacher_remarks.attitude}}</h5></td>
+                </tr>
+
+                <tr>
+                    <td><h5><b>CONDUCT</b></h5></td>
+                    <td><h5>{{teacher_remarks.conduct}}</h5></td>
+                </tr>
+
+                <tr>
+                    <td><h5><b>INTEREST</b></h5></td>
+                    <td><h5>{{teacher_remarks.interest}}</h5></td>
+                </tr>
+
+                <tr>
+                    <td><h5><b>FORM TEACHER'S REMARK</b></h5></td>
+                    <td><h5>{{teacher_remarks.remark}}</h5></td>
+                </tr>
+
+                <tr>
+                    <td><h5><b>HOUSE MASTER'S REMARKS</b></h5></td>
+                    <td><h5>{{house_master_remarks.remark}}</h5></td>
+                </tr>
+            </tbody>
+        
+        </table>
+    </div>
+</div>

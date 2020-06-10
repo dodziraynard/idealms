@@ -1,0 +1,66 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block username %} {{request.user.staff.get_short_name}} {% endblock username %}
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <p>ACADEMIC RECORDS - SUBJECT TEACHER</p>
+        </div>
+        <div class="content">
+            
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                {% if message %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info! </strong> {{message}}.
+                    </div>
+                {% endif %}
+
+                <div class="records">
+                    {% if pending %}
+                    <h4 class="text text-danger">PENDING</h4>
+                    
+                    {% for item in pending %}
+                        <h3 class="text text-warning">{{item.subject}} - {{item.student_class}}</h3>
+                    {% endfor %}
+
+                    {% else %}
+                        <div class="alert alert-info fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>No pending record</strong>
+                        </div>
+                    {% endif %}
+
+
+                    <hr>
+                    {% if submitted %}
+                    <h4 class="text text-success">SUBMITTED</h4>
+                    
+                    {% for item in submitted %}
+                        <h3 class="text text-success">{{item.subject}} - {{item.student_class}}</h3>
+                    {% endfor %}
+
+                    {% else %}
+                        <div class="alert alert-info fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>No record was submitted</strong>
+                        </div>
+                    {% endif %}
+                    
+                    <hr>
+                    <div>
+                        <a class="btn btn-primary" href="{% url 'staff:input_subject_records' %}">Enter Records</a>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

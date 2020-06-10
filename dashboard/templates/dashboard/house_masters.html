@@ -1,0 +1,72 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | House Masters {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>HOUSE MASTER</h3>
+            <div class="add-form card card-responsive">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong>{{error_message}}.
+                    </div>
+                {% endif %}
+                <a href="/resources/assets/sheets/house_masters.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                <h4>ADD HOUSE MASTERS FROM EXCEL SHEET</h4>
+
+                <form action="{% url 'dashboard:house_masters' %}" method="POST" enctype="multipart/form-data" id="houseMasterForm"> 
+                    {% csrf_token %}
+                    <!-- <input type="file" name="files" required>
+                    <button type="submit" class="btn btn-primary"> <h5><span class="fa fa-upload"></span> Upload</h5></button> -->
+
+                    <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</label>
+                    <input id="files"  
+                            type="file" 
+                            name="files" 
+                            accept=".xls,.xlsx"
+                            style="display: none;" required onchange="submitForm('houseMasterForm')">
+                </form>
+            </div>
+        </div>
+
+        <div class="content">
+            <hr>
+            <div class="body card card-responsive">
+                <div class="search-content">
+                    <form action="" method="GET">
+                        <input type="search" name="staff_id" placeholder="Search IDs" value="{{staff_id}}">
+                        <button type="submit"><span class="fa fa-search"></span></button>
+                    </form>
+                </div>
+
+                {% if house_masters %}
+                <table class="table table-striped table-hover">
+                    <thead class="">
+                        <tr>
+                            <th><h5>STAFF ID</h5></th>
+                            <th><h5>NAME</h5></th>
+                            <th><h5>HOUSE</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for master in house_masters %}
+                       <tr>
+                            <td><h5>{{master.staff.staff_id|upper}}</h5></td>
+                            <td><h5>{{master.staff.name|title}}</h5></td>
+                            <td><h5>{{master.house|title}}</h5></td>
+                       </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% else %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>No record found!</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

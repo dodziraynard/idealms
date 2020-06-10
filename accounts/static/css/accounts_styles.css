@@ -1,0 +1,169 @@
+body {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background: -webkit-gradient(linear, left top, left bottom, from(#0085f1), to(#09e0c4));
+  background: linear-gradient(#0085f1, #09e0c4);
+  height: 100vh;
+  width: 100vw;
+}
+
+.main {
+  height: 100vh;
+  width: 100vw;
+  background: url("/assets/images/back.png");
+  position: fixed;
+}
+
+.main .intro-text {
+  color: whitesmoke;
+  text-align: center;
+  font-size: 1.5em;
+  position: absolute;
+  top: 1vh;
+  width: 100%;
+  -webkit-transition: 1s all ease-in-out;
+  transition: 1s all ease-in-out;
+  -webkit-transform: translateY(-200%);
+          transform: translateY(-200%);
+}
+
+.undo-transform {
+  -webkit-transform: translateY(0) !important;
+          transform: translateY(0) !important;
+}
+
+form {
+  width: 90%;
+  margin: 25vh auto;
+  background: white;
+  -webkit-box-shadow: 0px 0px 20px #09b5e0;
+          box-shadow: 0px 0px 20px #09b5e0;
+  border-radius: 10px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-transition: 1s all ease-in-out;
+  transition: 1s all ease-in-out;
+  -webkit-transform: translateY(200%);
+          transform: translateY(200%);
+}
+
+form .form-group {
+  border: 0.5px solid #d6d6d6;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+form .form-group span {
+  font-size: 2em;
+  padding: 5px;
+  width: 45px;
+}
+
+form .form-group input {
+  padding: 8px;
+  width: 85%;
+  background: none;
+  border: none;
+  outline: none;
+  margin: 0;
+}
+
+form .form-group:hover {
+  -webkit-box-shadow: 0px 0px 10px #d6d6d6;
+          box-shadow: 0px 0px 10px #d6d6d6;
+}
+
+form .submit {
+  text-align: center;
+  padding: 5px;
+}
+
+form .submit button {
+  background: white;
+  border: 1px solid #d6d6d6;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1.3em;
+}
+
+form .submit button:hover {
+  -webkit-box-shadow: 0px 0px 10px #d6d6d6;
+          box-shadow: 0px 0px 10px #d6d6d6;
+}
+
+.header {
+  text-align: center;
+  background: #1593dd;
+  padding: 5px;
+  font-size: 2em;
+  color: white;
+  font-weight: 600;
+}
+
+.user-tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  background: #50c1ee;
+  height: 50px;
+  -webkit-user-select: none !important;
+     -moz-user-select: none !important;
+      -ms-user-select: none !important;
+          user-select: none !important;
+}
+
+.user-tabs .tab {
+  padding: 4px;
+  cursor: pointer;
+  -webkit-transition: 0.2s all cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: 0.2s all cubic-bezier(0.075, 0.82, 0.165, 1);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.user-tabs .tab:hover {
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
+  border-bottom: 5px solid purple;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 3px 5px #d6d6d6;
+          box-shadow: 0px 3px 5px #d6d6d6;
+}
+
+.user-tabs .active-tab {
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
+  border-bottom: 5px solid purple;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 5px 5px #50c1ee;
+          box-shadow: 0px 5px 5px #50c1ee;
+  color: white;
+}
+
+.form-body {
+  padding: 10px;
+  -webkit-transition: .2s all ease;
+  transition: .2s all ease;
+  width: 80%;
+  margin: auto;
+}
+
+.form-body .selected-user {
+  border-bottom: 2px solid #d6d6d6;
+  text-transform: uppercase;
+}
+
+.toggle-form-body {
+  -webkit-transform: rotateY(360deg);
+          transform: rotateY(360deg);
+}
+/*# sourceMappingURL=accounts_styles.css.map */

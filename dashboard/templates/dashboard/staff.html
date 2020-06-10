@@ -1,0 +1,73 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Staff {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>STAFF</h3>
+            <div class="add-form card card-responsive">
+                <a href="/resources/assets/sheets/staff.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                <h4>ADD STAFF FROM EXCEL SHEET</h4>
+
+                <form action="{% url 'dashboard:staff' %}" method="POST" enctype="multipart/form-data" id="staffForm"> 
+                    {% csrf_token %}
+                    <!-- <input type="file" name="files" required>
+                    <button type="submit" class="btn btn-primary"> <h5><span class="fa fa-upload"></span> Upload</h5></button> -->
+
+                    <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</label>
+                    <input id="files"  
+                            type="file" 
+                            name="files" 
+                            accept=".xls,.xlsx"
+                            style="display: none;" required onchange="submitForm('staffForm')">
+                </form>
+            </div>
+        </div>
+        
+        <hr>
+        <div class="content">
+            <div class="body card card-responsive">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+
+                <div class="search-content">
+                    <form action="" method="get">
+                        <input type="search" name="staff_id" placeholder="Seach IDs" value="{{staff_id}}">
+                        <button type="submit"> <span class="fa fa-search"></span></button>
+                    </form>
+                </div>
+
+                {% if staff %}
+                <table class="table table-striped table-hover h-scroll">
+                    <thead class="">
+                        <tr>
+                            <th><h5>STAFF ID</h5></th>
+                            <th><h5>NAME</h5></th>
+                            <th><h5>MOBILE</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for teacher in staff %}
+                       <tr>
+                            <td><h5>{{teacher.staff_id|upper}}</h5></td>
+                            <td><h5>{{teacher.name|title}}</h5></td>
+                            <td><h5>{{teacher.sms_number}}</h5></td>
+                    </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% else %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>No record found!</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

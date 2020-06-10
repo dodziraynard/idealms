@@ -1,0 +1,52 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block username %} {{request.user.staff.get_short_name}} {% endblock username %}
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <p>ACADEMIC RECORDS - FORM TEACHER</p>
+        </div>
+        <div class="content">
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                {% if message %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info! </strong> {{message}}.
+                    </div>
+                {% endif %}
+
+                {% if warnings %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Alert! </strong> {{warnings}}.
+                    </div>
+                {% endif %}
+
+                <div class="records">
+                    {% if not remarks %}
+                    <h3 class="text text-danger">Pending</h3>
+                    <h4 class="text text-warning">{{request.school.current_academic_year}} {{request.school.current_semester}} Remarks - {{request.user.staff.student_class}}</h4>
+                    
+                    {% else %}
+                    <h3 class="text text-success">Submitted</h3>
+                    <h4 class="text text-success">{{request.school.current_academic_year}} {{request.school.current_semester}} Remarks - {{request.user.staff.student_class}}</h4>
+                    {% endif %}
+                </div>
+
+                <hr>
+                <div>
+                    <a class="btn btn-primary" href="{% url 'staff:input_form_master_remarks' %}">Enter Remarks</a>
+                </div>
+                <hr>
+
+            </div>
+        </div>
+    </div>
+{% endblock body %}

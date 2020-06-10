@@ -1,0 +1,110 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>GENERATE STUDENT REPORT</h3>
+        </div>
+        <div class="content">
+            
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                {% if message %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info! </strong> {{message}}.
+                    </div>
+                {% endif %}
+
+                <div class="records">
+                    <div class="tabs">
+                        <ul class="tab-header">
+                            <li class="tab" data-toggle="student">STUDENT</li>
+                            <li class="tab" data-toggle="class" >CLASS</li>
+                        </ul>
+        
+                        <div class="tab-body">
+                            <div class="body default-tab student">
+                                <form class="report-detail-form card card-responsive">
+                                    <h3>STUDENT DETAILS</h3>
+                                    <label for="student">STUDENT ID</label>
+                                    <input class="form-control" type="text" name="student" id="student" required>
+
+                                    <hr>
+                                    <h3>RECORD DETAILS</h3>
+                                    <label for="academic_year">ACADEMIC YEAR</label>
+                                    <select class="form-control" name="academic_year" id="academic_year" required>
+                                        <option value="">--- Select Academic Year ---</option>
+                                         {% for academic_year in academic_years %}
+                                         <option value="{{academic_year.academic_year}}">{{academic_year.academic_year}}</option>
+                                         {% endfor %}
+                                    </select>
+                                    
+                                    <label for="semester">SEMESTER</label>
+                                    <select class="form-control" name="semester" id="semester" required>
+                                        <option value="">--- Select Semester ---</option>
+                                        {% for semester in semesters %}
+                                             <option value="{{semester.semester}}">{{semester.semester}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    
+                                    <button class="btn btn-primary" type="submit">Print</button>
+                                </form>
+                            </div>
+
+                            <div class="body class">
+                                <form class="report-detail-form-class card card-responsive">
+                                    <h3>STUDENT DETAILS</h3>
+                                    <label for="semester">CLASS OF STUDENTS</label>
+                                    <select class="form-control" name="student_class_id" id="student_class_id" required>
+                                        <option value="">--- Select Class ---</option>
+                                        {% for class in classes %}
+                                             <option value="{{class.student_class_id}}">{{class.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    
+                                    <hr>
+                                    <h3>RECORD DETAILS</h3>
+                                    <label for="academic_year">ACADEMIC YEAR</label>
+                                    <select class="form-control" name="academic_year" id="academic_year" required>
+                                        <option value="">--- Select Academic Year ---</option>
+                                         {% for academic_year in academic_years %}
+                                         <option value="{{academic_year.academic_year}}">{{academic_year.academic_year}}</option>
+                                         {% endfor %}
+                                    </select>
+                                    
+                                    <label for="semester">SEMESTER</label>
+                                    <select class="form-control" name="semester" id="semester" required>
+                                        <option value="">--- Select Semester ---</option>
+                                        {% for semester in semesters %}
+                                             <option value="{{semester.semester}}">{{semester.semester}}</option>
+                                        {% endfor %}
+                                    </select>
+             
+                                    <select hidden name="student" id="student" required>
+                                         <option value="">--- Select student ---</option>   
+                                         <option value="all" selected>All</option>
+                                    </select>
+                                    <button class="btn btn-primary" type="submit">Print</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>            
+                </div>
+
+                <div id="student-report">
+                {% if reports %}
+                
+                
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

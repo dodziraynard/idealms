@@ -1,0 +1,88 @@
+@media only screen and (min-width: 768px) {
+  .menu-bar {
+    display: none;
+  }
+  .card-responsive {
+    margin: 10px auto;
+    width: 60%;
+  }
+  .nav {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+  }
+  .nav .logo {
+    margin: auto;
+    margin-left: 5%;
+    width: 100%;
+  }
+  .nav .logo .school-name {
+    display: block;
+    margin-top: 5px;
+  }
+  .nav .header {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+  .nav .menu {
+    background: white;
+    -webkit-box-shadow: 0 2px 5px #d6d6d6;
+            box-shadow: 0 2px 5px #d6d6d6;
+    height: 50px;
+    padding-top: 10px;
+    width: 100%;
+    padding-top: 5px;
+    -webkit-transform: translateX(0) !important;
+            transform: translateX(0) !important;
+    position: relative;
+    overflow: unset;
+  }
+  .nav .menu ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal !important;
+    -webkit-box-direction: normal !important;
+        -ms-flex-direction: row !important;
+            flex-direction: row !important;
+    list-style-type: none;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .nav .menu .menuitem {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 1em;
+    padding: 0px;
+  }
+  .nav .menu .menuitem:hover {
+    background: none;
+  }
+  .nav .menu .menuitem a {
+    color: #727272;
+    text-decoration: none;
+  }
+  .nav .menu .drop-down-item {
+    background: white;
+    margin-top: 12px;
+    -webkit-transition: height .2s ease-in-out;
+    transition: height .2s ease-in-out;
+    height: 0px;
+    -webkit-box-shadow: 0px 5px 5px #d6d6d6;
+            box-shadow: 0px 5px 5px #d6d6d6;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .nav .menu .drop-down-item p {
+    padding: 10px;
+    margin: 0;
+  }
+  .nav .menu .drop-down-item p:hover {
+    background: lightblue;
+  }
+  .search-content {
+    width: 50%;
+  }
+}
+/*# sourceMappingURL=res_dashboard_styles.css.map */

@@ -1,0 +1,83 @@
+{% if students_records %}
+<h4>No. on Roll: {{students.count}}</h4>
+<input type="hidden" id="roll_no" value="{{students.count}}">
+<table class="table table-hover h-scroll">
+    <thead class="table-header">
+        <tr>
+            <th style="background-color: #d4d4d4;"><h5>S/N</h5></th>
+            <th><h5  class='text text-center'>STUDENT ID</h5></th>
+            <th><h5>NAME</h5></th>
+            <th><h5  class='text text-center'>CLASS SCORE</h5></th>
+            <th><h5  class='text text-center'>EXAM SCORE</h5></th>
+            <th><h5  class='text text-center'>TOTAL</h5></th>
+            <th><h5  class='text text-center'>GRADE</h5></th>
+            <th><h5  class='text text-center'>REMARK</h5></th>
+            <th><h5  class='text text-center'>POSITION</h5></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student, record in students_records.items %}
+        <tr class="tr-{{student.student_id}}">
+            <td style="background-color: #d4d4d4;"><h5>{{forloop.counter}}</h5></td>
+            <td><h5 class='text text-center'>{{student.student_id}}</h5></td>
+            <td><h5>{{student.name|upper}}</h5></td>
+            <td>
+                <h5 class='text text-center'>{{record.class_score}}</h5>
+            </td>
+
+            <td>
+                <h5 class='text text-center'>{{record.exam_score}}</h5>
+            <td>
+                <h5 class='text text-center'>{{record.total}}</h5>
+            </td>
+
+            <td>
+                 <h5 class='text text-center'>{{record.grade}}</h5>
+            </td>
+
+            <td>
+                 <h5 class='text text-center'>{{record.remark}}</h5>
+            </td>
+
+            <td>
+                 <h5 class='text text-center'>{{record.position}}</h5>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% if sheet %}
+<hr>
+<form id="recordForm"
+        action="{% url 'staff:upload_record' %}" 
+        method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="hidden" value="{{academic_year}}" name="academic_year">
+        <input type="hidden" value="{{form}}" name="form">
+        <input type="hidden" value="{{semester}}" name="semester">
+        <input type="hidden" value="{{subject_name}}" name="subject_name">
+
+
+        <a class="btn btn-info" href="{{sheet.file.url}}" download><span class="fa fa-download"></span>Download</a>
+        {% if filled_sheet %}
+        <a class="btn btn-info" href="{{filled_sheet.file.url}}" download><span class="fa fa-download"></span> SAVE</a>
+        <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> UPDATE</label>
+
+        {% else %}
+        <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> UPLOAD</label>
+        {% endif %}
+       
+        <input id="files"  
+                type="file" 
+                name="file" 
+                accept=".xls,.xlsx"
+                style="display: none;" required onchange="submitForm('recordForm')">
+   </form>
+{% endif %}
+
+{% else %}
+<h4 class="text text-warning">No students found</h4>
+{% endif %}

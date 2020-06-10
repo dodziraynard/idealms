@@ -1,0 +1,66 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | GRADING SYSTEM {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>GRADING SYSTEM</h3>
+            <div class="add-form card card-responsive">
+                <h4>ADD GRADING SYSTEM</h4>
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+
+                <form action="{% url 'dashboard:grading_system' %}" method="POST"> 
+                    {% csrf_token %}
+                    <input type="number" name="min_score" placeholder="Minimum Score" required>
+                    <input type="text" name="grade" placeholder="Grade" required max="2">
+                    <input type="text" name="remark" placeholder="Remark" required max="20">
+                    <br>
+                    <p class="text text-right"><button type="submit" class="btn btn-primary">GO</button></p>
+                </form>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="body card card-responsive h-scroll">
+                {% if gradings %}
+                    <table class="table">
+                        <thead>
+                            <tr class="text text-center">
+                                <th class="text text-center"><h4>MINIMUM SCORE</h4></th>
+                                <th class="text text-center"><h4>GRADE</h4></th>
+                                <th class="text text-center"><h4>REMARK</h4></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for grading in gradings %}
+                            <tr class="text text-center">
+                                <td><h5>{{grading.min_score}}</h5></td>
+                                <td><h5>{{grading.grade}}</h5></td>
+                                <td><h5>{{grading.remark}}</h5></td>
+                                <td>
+                                    <form action="{% url 'dashboard:delete_grading_system' %}" method="POST" onsubmit="deleteGradingSystem(event)">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="grading_id" value="{{grading.id}}">
+                                        <button type="submit"> <span class="btn btn-warning">DEL</span></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                {% else %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>No record found!</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

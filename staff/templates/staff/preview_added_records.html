@@ -1,0 +1,87 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block username %} {{request.user.staff.get_short_name}} {% endblock username %}
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <p>ACADEMIC RECORDS - SUBJECT TEACHER</p>
+            
+            {% if message %}
+                <div class="alert alert-info fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Info! </strong> {{message}}.
+                </div>
+            {% endif %}
+
+        </div>
+        <div class="content">
+        {% if students_records %}
+        <input type="hidden" value="{{academic_year}}" id="selected_academic_year">
+        <input type="hidden" value="{{semester}}" id="selected_semester">
+        <input type="hidden" value="{{subject_name}}" id="selected_subject_name">
+
+        <h4>No. on Roll: {{students.count}}</h4>
+        <input type="hidden" id="roll_no" value="{{students.count}}">
+        <table class="table table-hover h-scroll">
+            <thead class="table-header">
+                <tr>
+                    <th style="background-color: #d4d4d4;"><h5>S/N</h5></th>
+                    <th><h5  class='text text-center'>STUDENT ID</h5></th>
+                    <th><h5>NAME</h5></th>
+                    <th><h5  class='text text-center'>CLASS SCORE</h5></th>
+                    <th><h5  class='text text-center'>EXAM SCORE</h5></th>
+                    <th><h5  class='text text-center'>TOTAL</h5></th>
+                    <th><h5  class='text text-center'>GRADE</h5></th>
+                    <th><h5  class='text text-center'>REMARK</h5></th>
+                    <th><h5  class='text text-center'>POSITION</h5></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student, record in students_records.items %}
+                <tr class="tr-{{student.student_id}}">
+                    <td style="background-color: #d4d4d4;"><h5>{{forloop.counter}}</h5></td>
+                    <td><h5 class='text text-center'>{{student.student_id}}</h5></td>
+                    <td><h5>{{student.name|upper}}</h5></td>
+                    <td>
+                        <h5 class='text text-center'>{{record.class_score}}</h5>
+                    </td>
+
+                    <td>
+                        <h5 class='text text-center'>{{record.exam_score}}</h5>
+                    <td>
+                        <h5 class='text text-center'>{{record.total}}</h5>
+                    </td>
+
+                    <td>
+                        <h5 class='text text-center'>{{record.grade}}</h5>
+                    </td>
+
+                    <td>
+                        <h5 class='text text-center'>{{record.remark}}</h5>
+                    </td>
+
+                    <td>
+                        <h5 class='text text-center'>{{record.position}}</h5>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if sheet %}
+        <hr>
+        <form id="recordForm"
+                action="{% url 'staff:upload_record' %}" 
+                method="POST" enctype="multipart/form-data">
+
+                <a class="btn btn-info" href="{{sheet.file.url}}" download><span class="fa fa-download"></span> SAVE</a>
+                {% csrf_token %}
+        </form>
+        {% endif %}
+
+        {% else %}
+        <h4 class="text text-warning">No students found</h4>
+        {% endif %}
+    </div>
+</div>
+{% endblock body %}

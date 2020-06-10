@@ -1,0 +1,32 @@
+{% if subject_teachers %}
+    <p class="text text-info">TEACHERS</p>
+    {% for teacher in subject_teachers %}
+    <a  href="{% url 'accounts:login_as' 'teacher' teacher.staff_id %}">
+        <div class="panel-item">
+            <h5>{{teacher.name}} [{{teacher.staff_id}}]</h5>
+        </div>
+    </a>
+    {% endfor %}
+{% endif %}
+
+{% if house_masters %}
+    <p class="text text-info">HOUSE MASTERS</p>
+    {% for master in house_masters %}
+    <a  href="{% url 'accounts:login_as' 'house master' master.staff.staff_id %}">
+            <div class="panel-item">
+                <h5>{{master.staff.name}} [{{master.staff.staff_id}}]</h5>
+            </div>
+        </a>
+    {% endfor %}
+{% endif %}
+
+{% if classes %}
+    <p class="text text-info">FORM MASTERS</p>
+    {% for class in classes %}
+    <a  href="{% url 'accounts:login_as' 'form teacher' class.class_teacher.staff_id %}">
+            <div class="panel-item">
+                <h5>{{class.class_teacher.name}} [{{class.class_teacher.staff_id}}]</h5>
+            </div>
+        </a>
+    {% endfor %}
+{% endif %}

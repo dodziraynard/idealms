@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} KSHT | {% endblock title %}</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mdb.min.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/dashboard_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/res_dashboard_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/res_teacher_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/teacher_styles.css' %}">
+    <link rel="icon" type="image/png" href="{{request.school.crest.url}}">
+</head>
+<body>
+    <div id="loading"></div>
+   
+        {% if request.alert %}
+            <div id="alert">
+                {{request.alert}}
+            </div>
+        {% endif %}
+    
+     <!-- Right Panel -->
+    {% if request.user.is_superuser %}
+     <div class="right-panel hide-right-panel">
+        <div class="icon">
+            <span class="fa fa-gear"></span>
+        </div>
+        <div class="body">
+            <div class="r-tab">
+                <div class="r-tab-header">
+                    <div class="r-header-item" data-toggle="login-as">LOGIN AS</div>
+                    <div class="r-header-item" data-toggle="quick-config">QUICK CONFIG</div>
+                </div>
+
+                <div class="r-tab-body" id="login-as">
+                    <h5>LOGIN AS</h5>
+                    <input type="search" 
+                            placeholder="Search name or ID" 
+                            name="query" 
+                            onchange="fetch_users()"
+                            class="form-control"
+                            autocomplete="false"
+                            id="user-query"
+                            >
+
+                    <div class="users" id="users">
+                        <p class="text text-info">STAFF</p>
+                        {% for teacher in request.staff %}
+                        <a  href="{% url 'accounts:login_as' 'teacher' teacher.staff_id %}">
+                            <div class="panel-item">
+                                <h5>{{teacher.name}} [{{teacher.staff_id}}]</h5>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="r-tab-body" id="quick-config" style="display: none;">
+                    <h5>QUICK CONFIG</h5>
+                    <hr>
+                    <!-- LISTS -->
+                    <datalist id="semesters">
+                        <option value="First Semester">
+                        <option value="Second Semester">
+                    </datalist>
+                    <form action="{% url 'school:update' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="current_academic_year">Current Academic Year</label>
+                            <input type="text" class="form-control" name="current_academic_year" value="{{request.school.current_academic_year}}">
+                            
+                            <label for="current_academic_year">Current Semester</label>
+                            <select class="form-control" name="current_semester" id="current_semester">
+                                <option value="First Semester" {% if request.school.current_semester == 'First Semester' %} selected {% endif %} >First Semester</option>
+                                <option value="Second Semester" {% if request.school.current_semester == 'Second Semester' %} selected {% endif %} >Second Semester</option>
+                            </select>
+
+                            <hr>
+                            <label for="sms_id">SMS ID</label>
+                            <input type="text"
+                                class="form-control" 
+                                maxlength = 11
+                                name="sms_id" 
+                                value="{{request.school.sms_id}}">
+
+                            <label for="name">SCHOOL NAME</label>
+                            <input type="text" class="form-control" name="name" value="{{request.school.name}}">
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">UPDATE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    {% endif %}
+    
+    <!-- nav bar -->
+    <nav class="nav">
+        <div class="header row">
+            <div class="menu-bar">
+                <span class="fa fa-navicon"></span>
+            </div>
+            <div class="logo">
+                {% if school %}
+                    <a href="{% url 'dashboard:index' %}">
+                        <img src="{{school.crest.url}}" alt="">
+                    </a>
+                {% else %}
+                    <a href="{% url 'dashboard:index' %}">
+                        <img src="/resources/assets/images/crest.png" alt="">
+                    </a>
+                {% endif %}
+                <p class="school-name"><strong>{{request.school.name|upper}}</strong></p>
+            </div>
+            <div class="user">
+                <!-- <div class="notification">
+                    <p><span class="fa fa-bell-o"></span><sup class="banner">2</sup></p>
+                </div> -->
+
+                <div class="profile">
+                    <img src="/resources/assets/images/avatar.png" alt="user">
+                    <span class="username"> {% block username %} {{request.user.last_name|upper}} {% endblock username %}<span class="fa fa-angle-down"></span> </span>
+                     
+                    <div class="profile-drop-down">
+                        <p><a href="{% url 'dashboard:profile' %}">Profile</a></p>
+                        <p><a href="{% url 'accounts:logout' %}">Logout</a></p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        {% block menu %}
+        <div class="menu">
+            <ul>
+                <!-- Administrator -->
+                {% if request.user.is_superuser %}
+                <li class="menuitem">
+                    <a href="{% url 'dashboard:welcome' %}">
+                        <span class="fa fa-home"></span>Welcome
+                    </a>
+                </li>
+            
+                <li class="menuitem drop-down">
+                    <a>
+                        <span class="fa fa-mortar-board"></span>Student Records <span class="fa fa-angle-down"></span>
+                    </a>
+
+                    <div class="drop-down-item">
+                        <p>
+                            <a href="{% url 'dashboard:student_reports' %}">
+                                <span class="fa fa-line-chart"></span>Terminal Report
+                            </a>
+                        </p>
+
+                        <p>
+                            <a href="{% url 'dashboard:transcript' %}">
+                                <span class="fa fa-mortar-board"></span>Transcript
+                            </a>
+                        </p>
+                    </div>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'dashboard:promotion' %}">
+                        <span class="fa fa-send-o"></span>Promotion
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'sms:index' %}">
+                        <span class="fa fa-envelope"></span>SMS
+                    </a>
+                </li>
+
+                <li class="menuitem drop-down">
+                    <a>
+                        <span class="fa fa-mortar-board"></span>Configurations <span class="fa fa-angle-down"></span>
+                    </a>
+
+                    <div class="drop-down-item">
+                        <p>
+                            <a href="{% url 'dashboard:staff' %}">
+                                <span class="fa fa-user"></span>Staff
+                            </a>
+                        </p>
+                       
+                        <p>
+                            <a href="{% url 'dashboard:subjects' %}">
+                                <span class="fa fa-book"></span>Subjects
+                            </a>
+                        </p>
+
+                        <p>
+                            <a href="{% url 'dashboard:courses' %}">
+                                <span class="fa fa-tasks"></span>Courses
+                            </a>
+                        </p>
+
+                        <p>
+                            <a href="{% url 'dashboard:student_classes' %}">
+                                <span class="fa fa-vcard-o"></span>Classes
+                            </a>
+                        </p>
+
+                        <p>
+                            <a href="{% url 'dashboard:students' %}">
+                                <span class="fa fa-users"></span>Students
+                            </a>
+                        </p>  
+
+                        <p>
+                            <a href="{% url 'dashboard:teacher_subjects' %}">
+                                <span class="fa fa-pencil"></span>Assign Subjects
+                            </a>
+                        </p>  
+
+                        <p>
+                            <a href="{% url 'dashboard:house_masters' %}">
+                                <span class="fa fa-user"></span>House Masters
+                            </a>
+                        </p>  
+
+                        <p>
+                            <a href="{% url 'dashboard:grading_system' %}">
+                                <span class="fa fa-gear"></span>Grading System
+                            </a>
+                        </p>  
+
+                    </div>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'dashboard:files' %}">
+                        <span class="fa fa-file"></span>Files
+                    </a>
+                </li>
+
+                <!-- Teachers -->
+                {% elif request.user_type == 'teacher' %}
+                <li class="menuitem">
+                    <a href="{% url 'staff:welcome' %}">
+                        <span class="fa fa-home"></span>Welcome
+                    </a>
+                </li>
+                
+                <li class="menuitem">
+                    <a href="{% url 'staff:subject_teacher' %}">
+                        <span class="fa fa-alarm"></span>Pending Records
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'staff:input_subject_records' %}">
+                        <span class="fa fa-pencil"></span>Enter Records
+                    </a>
+                </li>
+                
+                <!-- Class Teacher -->
+                {% elif request.user_type == 'formteacher' %}
+                <li class="menuitem">
+                    <a href="{% url 'staff:form_teacher' %}">
+                        <span class="fa fa-alarm"></span>Pending Records
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'staff:input_form_master_remarks' %}">
+                        <span class="fa fa-pencil"></span>Enter Remarks
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'staff:student_reports' %}">
+                        <span class="fa fa-line-chart"></span>Student Reports
+                    </a>
+                </li>
+
+                <!-- House master -->
+                {% elif request.user_type == 'housemaster' %}                
+                <li class="menuitem">
+                    <a href="{% url 'staff:house_master' %}">
+                        <span class="fa fa-line-chart"></span>Pending
+                    </a>
+                </li>
+
+                <li class="menuitem">
+                    <a href="{% url 'staff:input_house_master_remarks' %}">
+                        <span class="fa fa-pencil"></span>Enter Remarks
+                    </a>
+                </li>
+
+
+                {% elif request.user.student %}
+
+                <li class="menuitem">
+                    <a href="">
+                        <span class="fa fa-line-chart"></span>Academic Records
+                    </a>
+                </li>
+
+                {% endif %}
+                <li class="menuitem">
+                    <a href="{% url 'accounts:logout' %}">
+                        <span class="fa fa-lock"></span>Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {% endblock menu %}
+    </nav>
+
+    {% block body %}
+
+    {% endblock body %}
+
+    {% load static %}
+   <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'js/mdb.min.js' %}"></script>
+   <script src="{% static 'js/fontawesome.min.js' %}"></script>
+   <script src="{% static 'js/dashboard_app.js' %}"></script>
+   <script src="{% static 'js/teacher_app.js' %}"></script>
+   <script src="{% static 'js/sms_app.js' %}"></script>
+</body>
+</html>

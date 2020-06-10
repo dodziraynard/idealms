@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mdb.min.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/student_styles.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/res_student_styles.css' %}"/>
+    <link rel="icon" type="image/png" href="{{request.school.crest.url}}">
+    
+    <title>STUDENT PORTAL</title>
+</head>
+<body class="student-home">
+    <div class="card card-responsive card-shadow">
+        <form class="student-login" action="{% url 'accounts:login' %}?next={{redirect_link}}" method="POST">
+            {% csrf_token %}
+            <h3 class="text text-center">STUDENT LOGIN</h3>
+            <span class="text text-danger">{{error_message}}</span>
+            <div>
+                <input class="form-control" type="hidden" name="user_type" value="student">
+                <div class="form-group">
+                    <label for="username"><span class="fa fa-user"></span> STUDENT ID</label>
+                    <input class="form-control" type="text" name="username" autocomplete="false">
+                </div>
+                <div class="form-group">
+                    <label for="password"><span class="fa fa-key"> </span> PIN</label>
+                    <input class="form-control" type="password" name="password" autocomplete="false">
+                </div>
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+{% if students_remark %}
+
+<div class="inline" style="width: 100px;">
+    <label for="total_attendance">TOTAL ATTEN: </label>
+    <input id="total_attendance" 
+            class="form-control" 
+            type="text" 
+            name="total_attendance"
+            value="{{total_attendance}}">
+</div>
+
+<!-- CSRF -->
+{% csrf_token %}
+<!-- LISTS -->
+<datalist id="attitudes">
+    <option value="Hardworking">
+    <option value="Serious">
+</datalist>
+
+<datalist id="interests">
+    <option value="Reading">
+    <option value="Footbal">
+</datalist>
+
+<datalist id="conducts">
+    <option value="Respectful">
+    <option value="Obedient">
+</datalist>
+
+<datalist id="remarks">
+    <option value="Could do better">
+    <option value="Buck-up">
+</datalist>
+
+
+
+<input type="hidden" value="{{academic_year}}" id="selected_academic_year">
+<input type="hidden" value="{{semester}}" id="selected_semester">
+<input type="hidden" value="{{class_name}}" id="selected_class_name">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><h5>STUDENT ID</h5></th>
+            <th><h5>NAME</h5></th>
+            <th><h5>ATTEN</h5></th>
+            <th><h5>ATTITUDE</h5></th>
+            <th><h5>INTEREST</h5></th>
+            <th><h5>CONDUCT</h5></th>
+            <th><h5>REMARK</h5></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student, remark in students_remark.items %}
+        <tr onclick="getRecords('{{student.student_id}}')">
+            <td><h5>{{student.student_id}}</h5></td>
+            <td><h5>{{student.name|upper}}</h5></td>
+            <td>
+                <div class="inline">
+                    <input type="number" 
+                            name="attendance" 
+                            id="{{student.student_id}}attendance"
+                            class="sml form-control"
+                            value="{{remark.attendance}}">
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input list="attitudes" 
+                            id="{{student.student_id}}attitude"
+                            name="attitude" 
+                            class="sml form-control"
+                            value="{{remark.attitude}}">
+
+                    <span class="btn btn-xs fa fa-refresh"
+                            data-field_id="{{student.student_id}}attitude"
+                            onclick="loadFormMasterPreviousRemarks(event, '{{student.student_id}}', 'attitude')"></span>
+            <td>
+                <div class="inline">
+                    <input list="interests" 
+                        id="{{student.student_id}}interest"
+                        name="interest" 
+                        class="sml form-control"
+                        value="{{remark.interest}}">
+
+                    <span class="btn btn-xs fa fa-refresh"
+                        data-field_id="{{student.student_id}}interest"
+                        onclick="loadFormMasterPreviousRemarks(event, '{{student.student_id}}', 'interest')"></span>
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input list="conducts" 
+                            id="{{student.student_id}}conduct"
+                            name="conduct" 
+                            class="sml form-control"
+                            value="{{remark.conduct}}">
+
+                    <span class="btn btn-xs fa fa-refresh"
+                            data-field_id="{{student.student_id}}conduct"
+                            onclick="loadFormMasterPreviousRemarks(event, '{{student.student_id}}', 'conduct')"></span>
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input list="remarks" 
+                        id="{{student.student_id}}remark"
+                        name="remark" 
+                        class="sml form-control"
+                        value="{{remark.remark}}">
+
+                    <span class="btn btn-xs fa fa-refresh"
+                        data-field_id="{{student.student_id}}remark"
+                        onclick="loadFormMasterPreviousRemarks(event, '{{student.student_id}}', 'remark')"></span>
+                    
+                    <span class="btn btn-success fa fa-save save-record"
+                        data-student_id="{{student.student_id}}"
+                        onclick="saveRemark(event)"></span>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<button class="btn btn-success" onclick="saveAllFormMasterRemarks()"><h6><span class="fa fa-save"></span> SAVE ALL</h6></button>
+
+{% else %}
+<h4 class="text text-warning">No student found</h4>
+{% endif %}

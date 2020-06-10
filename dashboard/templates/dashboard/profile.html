@@ -1,0 +1,38 @@
+{% extends "dashboard/base_template.html" %}
+{% block title %} ADMIN PROFILE {% endblock title %}
+{% block menu %}{% endblock menu %}
+
+{% block body %}
+<div class="content card card-responsive">
+        {% if request.user.staff %}
+            <div class="dp">
+                <img src="{{request.user.staff.image.url}}" alt="No DP">
+            </div>
+        {% endif %}
+
+        <h3>Username:</h3>
+        <h4>{{request.user.username}}</h4>
+
+        <h3>Password</h3>
+            <h4>************</h4>
+        
+        <a href="/superuser/auth/user/{{request.user.id}}/change/">Update user info</a>
+        {% if request.user.staff %}
+        <hr>
+        <h3>Full Name:</h3>
+        <h4>{{request.user.staff.name|upper}}</h4>
+
+        <h3>Staff ID:</h3>
+        <h4>{{request.user.staff.staff_id}}</h4>
+        {% else  %}
+
+        <h3 class="text text-warning">Your account is not linked to a staff</h3>
+        {% endif %}
+        
+        <a href="/superuser/staff/staff/{{request.user.staff.id}}/change/">Update staff info</a>
+        <hr>
+        <a class="btn btn-info" href="{% url 'dashboard:index' %}"> <h4><span class="fa fa-home"></span>HOME</h4> </a>
+</div>
+
+
+{% endblock body %}

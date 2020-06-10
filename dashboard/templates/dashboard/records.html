@@ -1,0 +1,271 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>ACADEMIC RECORDS</h3>
+        </div>
+
+        <div class="content"> 
+            {% if error_message %}
+                <div class="alert alert-warning fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error! </strong>{{error_message}}.
+                </div>
+            {% endif %}
+            
+            <div class="tabs">
+                <ul class="tab-header">
+                    <li class="tab" data-toggle="upload-templates">UPLOAD REQUEST</li>
+                    <li class="tab" data-toggle="record-files" >UPLOADED SHEETS</li>
+                </ul>
+
+                <div class="tab-body">
+                    <div class="body record-files">
+                        <div class="search-content">
+                            <form action="" method="GET">
+                                <input type="search" name="name__icontains" placeholder="Search record name" value="{{name__icontains}}">
+                                <button type="submit"><span class="fa fa-search"></span></button>
+                            </form>
+                        </div>
+                        
+                        <!-- Subject teacher request -->
+                        {% if records %}
+                        <div class="card card-responsive">
+                            <h4 class="text text-success">SUBJECT TEACHER REQUESTS</h4>
+                                <p class="text text-info">{{records.count}} result{% if records.count > 1 %}s{% endif %} found</p>
+                                <table class="table table-striped table-hover">
+                                    <thead class="">
+                                        <tr>
+                                            <th><h5>NAME</h5></th>
+                                            <th><h5>DATE</h5></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for record in records %}
+                                        <tr>
+                                            <td><h5>{{record.name|upper}}</h5></td>
+                                            <td><h5>{{record.date}}
+                                                <p><small>{{record.time_left}}</small></p>
+                                            </h5></td>
+                                            <td><h5>
+                                                {% if record.replied %}
+                                                    <span class="text text-success">Returned</span>
+                                                    <a href="{{record.replied.file.url}}"><span class="fa fa-download"></span> Download</a>
+                                                {% endif %}
+                                            </h5></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+
+                        <!-- Class teacher requests -->
+                        {% if class_teacher_request %}
+                        <div class="card card-responsive">
+                        <h4 class="text text-success">CLASS TEACHER REQUESTS</h4>
+                            <p class="text text-info">{{class_teacher_request.count}} result{% if class_teacher_request.count > 1 %}s{% endif %} found</p>
+                            <table class="table table-striped table-hover">
+                                <thead class="">
+                                    <tr>
+                                        <th><h5>NAME</h5></th>
+                                        <th><h5>DATE</h5></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in class_teacher_request %}
+                                    <tr>
+                                        <td><h5>{{record.name|upper}}</h5></td>
+                                        <td><h5>{{record.date}}
+                                            <p><small>{{record.time_left}}</small></p>
+                                        </h5></td>
+                                        <td><h5>
+                                            {% if record.replied %}
+                                                <span class="text text-success">Returned</span>
+                                                <a href="{{record.replied.file.url}}"><span class="fa fa-download"></span> Download</a>
+                                            {% endif %}
+                                        </h5></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                        <!-- Houser master requests -->
+                        {% if house_master_request %}
+                        <div class="card card-responsive">
+                            <h4 class="text text-success">HOUSE MASTER REQUESTS</h4>
+                            <p class="text text-info">{{house_master_request.count}} result{% if house_master_request.count > 1 %}s{% endif %} found</p>
+                            <table class="table table-striped table-hover">
+                                <thead class="">
+                                    <tr>
+                                        <th><h5>NAME</h5></th>
+                                        <th><h5>DATE</h5></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in house_master_request %}
+                                    <tr>
+                                        <td><h5>{{record.name|upper}}</h5></td>
+                                        <td><h5>{{record.date}}
+                                            <p><small>{{record.time_left}}</small></p>
+                                        </h5></td>
+                                        <td><h5>
+                                            {% if record.replied %}
+                                                <span class="text text-success">Returned</span>
+                                                <a href="{{record.replied.file.url}}"><span class="fa fa-download"></span> Download</a>
+                                            {% endif %}
+                                        </h5></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- REQUEST UPLOADS -->
+                    <div class="body default-tab upload-templates">  
+                        <div class="toggle-user-request">
+                            <button data-user_type="teacher"><h6>SUBJECT TEACHER</h6></button>
+                            <button data-user_type="class_teacher"><h6>FORM MASTER</h6></button>
+                            <button data-user_type="house_master"><h6>HOUSE MASTER</h6></button>
+                        </div>
+                        
+                        <!-- Upload request for subject teacher -->
+                        <form action="" enctype="multipart/form-data" method="POST" id="teacher" class="tab2-body card card-responsive">
+                            <a href="/resources/assets/sheets/academic_records.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                            {% csrf_token %}
+                            <label for="subject">Subject</label>
+                            <select class="form-control" name="subject" required>
+                                <option value=""> - - Select subject ---</option>
+
+                                {% for subject in subjects %}
+                                    <option value="{{subject.subject_id}}">{{subject.name|title}}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            <br>
+                            <label for="semester">Semester</label>
+                            <select class="form-control" name="semester" required>
+                                <option value="First Semester">First Semester</option>
+                                <option value="Second Semester">Second Semester</option>
+                            </select>
+
+                            <br>
+                            <label for="academic_year">Academic Year</label>
+                            <select name="academic_year" class="form-control">
+                                <option value="2019/2020">2019/2020</option>
+                                <option value="2020/2021">2020/2021</option>
+                            </select>
+
+                            <br>
+                            <label for="student_class">Class</label>
+                            <select class="form-control" name="student_class" required>
+                                <option value=""> -- Select Class --- </option>
+                                
+                                {% for student_class in student_classes %}
+                                    <option value="{{student_class.student_class_id}}">{{student_class.name}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <br>
+                            <div class="form-group">
+                                <label for="deadline">Deadline - Date and Time</label>
+                                <input class="form-control" type="datetime-local" name="deadline" required>
+                            </div>
+
+                            <br>
+                            <input class="form-control" type="file" name="file" required accept=".xls, .xlsx">
+
+                            <br>
+                            <button class="btn btn-primary" type="submit">Upload</button c>
+                        </form>
+                        
+                        <!-- Upload request for class teacher -->
+                        <form action="{% url 'dashboard:upload_class_teacher_sheet' %}" method="POST" enctype="multipart/form-data" id="class_teacher" class="tab2-body card card-responsive">
+                            <a href="/resources/assets/sheets/class_teacher_remarks.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                            
+                            {% csrf_token %}
+                            <label for="student_class">Class</label>
+                            <select class="form-control" name="student_class" required>
+                                <option value=""> -- Select Class --- </option>
+                                {% for student_class in student_classes %}
+                                    <option value="{{student_class.student_class_id}}">{{student_class.name}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="semester">Semester</label>
+                            <select name="semester" class="form-control">
+                                <option value="First Semester">First Semester</option>
+                                <option value="Second Semester">Second Semester</option>
+                            </select>
+
+                            <label for="academic_year">Academic Year</label>
+                            <select name="academic_year" class="form-control">
+                                <option value="2019/2020">2019/2020</option>
+                                <option value="2020/2021">2020/2021</option>
+                            </select>
+                            
+                            <br>
+                            <div class="form-group">
+                                <label for="deadline">Deadline - Date and Time</label>
+                                <input class="form-control" type="datetime-local" name="deadline" required>
+                            </div>
+
+                            <br>
+                            <input type="file" name="file" required>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+
+                        <!-- Upload request for house master -->
+                        <form action="{% url 'dashboard:upload_house_master_sheet' %}" method="POST" enctype="multipart/form-data" id="house_master" class="tab2-body card card-responsive">
+                            <a href="/resources/assets/sheets/house_master_remarks.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                            {% csrf_token %}
+                            <label for="house">House</label>
+                            <select class="form-control" name="house" required>
+                                <option value=""> -- Select House --- </option>
+                                {% for master in masters %}
+                                    <option value="{{master.house}}">{{master.house|title}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="student_class">Class</label>
+                            <select class="form-control" name="student_class" required>
+                                <option value=""> -- Select Class --- </option>
+                                {% for student_class in student_classes %}
+                                    <option value="{{student_class.student_class_id}}">{{student_class.name}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <label for="semester">Semester</label>
+                            <select name="semester" class="form-control">
+                                <option value="First Semester">First Semester</option>
+                                <option value="Second Semester">Second Semester</option>
+                            </select>
+
+                            <label for="academic_year">Academic Year</label>
+                            <select name="academic_year" class="form-control">
+                                <option value="2019/2020">2019/2020</option>
+                                <option value="2020/2021">2020/2021</option>
+                            </select>
+                            
+                            <br>
+                            <div class="form-group">
+                                <label for="deadline">Deadline - Date and Time</label>
+                                <input class="form-control" type="datetime-local" name="deadline" required>
+                            </div>
+
+                            <br>
+                            <input type="file" name="file" required accept=".xls,.xlsx">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

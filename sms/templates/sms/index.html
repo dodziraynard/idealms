@@ -1,0 +1,237 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | SMS {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>SMS</h3>
+        </div>
+
+        <div class="content"> 
+            {% if error_message %}
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error! </strong>{{error_message}}.
+                </div>
+            {% endif %}
+
+            {% if message %}
+                <div class="alert alert-info fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Info! </strong>{{message}}.
+                </div>
+            {% endif %}
+
+            {% if failedsms%}
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error! </strong>Some messages were not sent.
+                </div>
+            {% endif %}
+
+            {% if  sms_status %}
+                <div class="alert alert-info fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Info! </strong>{{ sms_status}}.
+                </div>
+            {% endif %}
+            
+            <div class="tabs">
+                <ul class="tab-header h-scroll">
+                    <li class="tab" data-toggle="sms-class" >CLASS</li>
+                    <li class="tab" data-toggle="sms-student" >STUDENT</li>
+                    <li class="tab" data-toggle="general-sms">GENERAL SMS</li>
+                    <li class="tab" data-toggle="failed-sms" >FAILED SMS</li>
+                    <li class="tab" data-toggle="check-balance">SMS BALANCE</li>
+                </ul>
+
+                <div class="tab-body">
+                    <div class="body default-tab sms-class">
+                        <div class="card card-responsive">
+                            <h4>SEND TERMINAL REPORT OF A CLASS TO GUARDIAN</h4>
+                            <form action="{% url 'sms:preview_report' %}">
+                                <label for="student_class">STUDENT OF CLASS</label>
+                                <select class="form-control" name="student_class" required>
+                                    <option value="">--- Class ---</option>
+                                    {% for class in classes %}
+                                    <option value="{{class.student_class_id}}">{{class.name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <hr>
+                                <h4>REPORT DETAILS</h4>
+                                <label for="class_id">RECORD OF CLASS</label>
+                                <select class="form-control" name="class_id" required>
+                                    <option value="">--- Class ---</option>
+                                    {% for class in classes %}
+                                    <option value="{{class.student_class_id}}">{{class.name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <label for="academic_year">ACADEMIC YEAR</label>
+                                <select class="form-control" name="academic_year" required>
+                                    <option value="">--- Academic Year ---</option>
+                                    {% for academic_year in academic_years %}
+                                    <option value="{{academic_year.academic_year}}">{{academic_year.academic_year}}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <label for="semester">SEMESTER</label>
+                                <select class="form-control" name="semester" required>
+                                    <option value="">--- Semester ---</option>
+                                    {% for semester in semesters %}
+                                    <option value="{{semester.semester}}">{{semester.semester}}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+                                <button type="submit" class="btn btn-primary">preview</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="body sms-student">  
+                        <div class="card card-responsive">
+                            <h4>SEND TERMINAL REPORT OF STUDENT TO A GUARDIAN</h4>
+                            <form action="{% url 'sms:preview_report' %}">
+
+                                <label for="student_id">STUDENT ID</label>
+                                <input class="form-control" type="text" name="student_id" required>
+
+                                <hr>
+                                <h4>RECORD DETAILS</h4>
+                                <label for="class_id"> RECORD OF CLASS</label>
+                                <select class="form-control" name="class_id" required>
+                                    <option value="">--- Class ---</option>
+                                    {% for class in classes %}
+                                    <option value="{{class.student_class_id}}">{{class.name}}</option>
+                                    {% endfor %}
+                                </select>
+
+
+                                <label for="academic_year">ACADEMIC YEAR</label>
+                                <select class="form-control" name="academic_year" required>
+                                    <option value="">--- Academic Year ---</option>
+                                    {% for academic_year in academic_years %}
+                                    <option value="{{academic_year.academic_year}}">{{academic_year.academic_year}}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <label for="semester">SEMESTER</label>
+                                <select class="form-control" name="semester" required>
+                                    <option value="">--- Semester ---</option>
+                                    {% for semester in semesters %}
+                                    <option value="{{semester.semester}}">{{semester.semester}}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <br>
+                                <button type="submit" class="btn btn-primary">preview</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="body general-sms">
+                        <div class="card card-responsive"> 
+                            <h4>SEND BULK MESSAGE</h4>
+                            <form action="{% url 'sms:general' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <h5>DELIVER TO:</h5>
+                                <label for="teachers">ALL STAFF</label>
+                                <input type="checkbox" name="teachers">
+
+                                <br>
+                                <label for="parents">ALL PARENTS (GUARDIANS)</label>
+                                <input type="checkbox" name="parents">
+                                
+                                <br>
+                                <br>
+                                <a href="/resources/assets/sheets/sms_contacts.xlsx" class="btn btn-sm btn-success" download><span class="fa fa-download"></span></a>
+                                
+                                <label for="files">IMPORT CONTACTS FROM EXCEL</label>
+                                <input class="form-control btn btn-primary" type="file" name="files" id="files" accept=".xlsx .xls">
+
+                                <br>
+                                <br>
+                                <label for="entered_numbers">ENTER NUMBERS (Separate by comma)</label>
+                                <textarea class="form-control" type="text" name="entered_numbers"></textarea>
+
+                                <br>
+                                <label for="message">Message</label><br>
+                                <textarea name="message" class="form-control" required></textarea>
+
+                                <br>
+                                <button type="submit" class="btn btn-primary">Send</button>
+                            </form>
+                        </div> 
+                    </div>
+
+                    <div class="body failed-sms">  
+                        {% if failedsms %}
+                        <h3 class="text text-danger">FAILED SMS</h3>
+                        <div class="alert alert-warning" style="overflow-x: auto;">
+                            <p class="text text-info">{{failedsms.count}} result{% if failedsms.count > 1 %}s{% endif %} found</p>
+                            <table class="table table-striped responsive table-hover">
+                                <thead class="">
+                                    <tr>
+                                        <th><h5>CONTACT</h5></th>
+                                        <th><h5>MESSAGE</h5></th>
+                                        <th><h5>REASON</h5></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <form action="{% url 'sms:actions' %}" method="POST">
+                                        {% csrf_token %}
+                                        <label for="">Mark All</label>
+                                        <input type="checkbox" id="failed_ids_toggle_all" checked onchange="toggleGroupedCheckbox(this, '.failed_ids')">
+                                        <select class="form-control" name="action" required>
+                                            <option value="">--- Action ---</option>
+                                            <option value="resend">Resend selected</option>
+                                            <option value="delete">Delete Selected</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">Go</button>
+                                    {% for sms in failedsms %}
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="failed_ids" class="failed_ids" value="{{sms.id}}" checked>
+                                            <h5>{{sms.name|upper}}</h5>
+                                            <h6 style="width: 200px; overflow: auto;">{{sms.number}}</h6>
+                                        </td>
+                                        <td>
+                                            <pre>{{sms.message}}</pre>
+                                            <p><small>{{sms.date}}</small></p>
+                                        </td>
+                                        <td>
+                                            <h5><span class="fa fa-danger"></span> {{sms.reason}}</h5>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </form>
+                                <!-- <form action="{% url 'sms:delete_sms' %}" method="post">
+                                    {% for sms in failedsms %}
+                                        <input type="checkbox" name="failed_ids" value="{{sms.id}}" hidden checked>
+                                    {% endfor %}
+                                    <button type="submit"  class="btn btn-warning">Delete All</button>
+                                </form> -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% else %}
+                        <div class="alert alert-info fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>No failed SMS!</strong>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="body card card-responsive check-balance">  
+                        <button class="btn btn-primary" onclick="checkBalance(this)">Check Balance</button>   
+                        <div id="balance">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

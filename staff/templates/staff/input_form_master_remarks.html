@@ -1,0 +1,76 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block username %} {{request.user.staff.get_short_name}} {% endblock username %}
+{% block body %}
+    <div class="main-body">
+        {% csrf_token %}
+        <div class="record-display h-scroll">
+        </div>
+
+        <div class="header">
+            <p>ACADEMIC RECORDS - FORM TEACHER</p>
+            <div class="records card card-responsive">
+                <table class="table">
+                    <tbody>
+                        {% csrf_token %}
+                        <tr>
+                            <td><h5>ACADEMIC YEAR</h5></td>
+                            <td>
+                                <select class="form-control" name="academic_year" id="academic_year" readonly>
+                                    <option value="{{school.current_academic_year}}" selected>{{school.current_academic_year}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h5>SEMESTER</h5></td>
+                            <td>
+                                <select class="form-control" name="semester" id="semester" readonly>
+                                    <option value="{{request.school.current_semester}}" selected>{{request.school.current_semester}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h5>CLASS</h5></td>
+                            <td>
+                                <input id="class_name" class="form-control" type="text" value="{{request.user.staff.student_class.name}}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><h5>No. on Roll</h5></td>
+                            <td>
+                                <h4>{{request.user.staff.student_class.get_number_of_students}}</h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <p class="text text-right"><button class="btn btn-info" onclick="generateFormTeacherRemarkSheet()">GENERATE EXCEL SHEET</button></p></td>
+                            <td> <p class="text text-right"><button class="btn btn-primary" onclick="loadFormMasterRemarksTemplate()">LOAD</button></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="content">
+            
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                {% if message %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info! </strong> {{message}}.
+                    </div>
+                {% endif %}
+                
+                <div class="remark-template-div h-scroll">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

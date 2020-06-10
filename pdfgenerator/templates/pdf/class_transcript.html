@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>{{student.name}} - ACADEMIC TRANSCRIPT</title>
+		<style type="text/css">
+			@page {
+				margin: 1cm;
+				size: a4;
+
+                @frame footer_frame {
+                    -pdf-frame-content: footer_content;
+                    left: 50pt; 
+                    width: 512pt; 
+                    top: 800pt; 
+                    height: 20pt;
+                }
+			}
+		</style>
+    </head>
+	<body>
+		{% if error_message %}
+		<h3 style="color: red">{{error_message}}</h3>
+		{% else %}
+		<div>
+            {% if not student_transcript %}
+            <h3 style="color: red">No records found</h3>
+            {% endif %}
+            {% for student, records in student_transcript.items %}
+                <h1 style="text-align: center; font-size: 2em; padding: 0; margin: 0">GHANA EDUCATION SERVICE</h1>
+                <h1 style="text-align: center; font-size: 2em; padding: 0; margin: 0">{{request.school.name|upper}}</h1>
+                <p style="text-align: center; padding: 0; margin: 0"><img src="{{request.school.crest.url}}" alt=""></p>
+                
+                <h1 style="text-align: center;">{{student.name|upper}}</h1>
+                <h1 style="text-align: center;">TRANSCRIPT</h1>
+                
+                <!-- Student's previous classes -->
+                {% for s, forms in student_forms.items %}
+                    {% if s == student %}
+                        {% for item in forms %}
+                            <h1>FORM {{item}}</h1>
+                            {% for s, semesters in student_semesters.items %}
+                                {% if s == student %}
+                                    {% for semester in semesters %}
+                                        <h3 style="margin-left: 10px;">{{semester.semester|upper}}</h3>
+                                        <h3 style="text-align: center;">CORE SUBJECTS</h3>
+                                        <table style="background: rgb(250, 250, 250); padding: 2px">
+                                            <thead>
+                                                <tr style="text-align: center;">
+                                                    <th><h5>SUBJECT</h5></th>
+                                                    <th><h5>GRADE</h5></th>
+                                                    <th><h5>REMARK</h5></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for record in records %}
+                                                    {% if record.record_class.form == item and record.semester == semester.semester and not record.subject.is_elective %}
+                                                        <tr style="text-align: center;">
+                                                            <td><h5>{{record.subject.name|upper}}</h5></td>
+                                                            <td><h5>{{record.grade}}</h5></td>
+                                                            <td><h5>{{record.remark}}</h5></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+
+                                        <h3 style="text-align: center;">ELECTIVE SUBJECTS</h3>
+                                        <table style="background: rgb(250, 250, 250); padding: 2px">
+                                            <thead>
+                                                <tr style="text-align: center;">
+                                                    <th><h5>SUBJECT</h5></th>
+                                                    <th><h5>GRADE</h5></th>
+                                                    <th><h5>REMARK</h5></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for record in records %}
+                                                    {% if record.record_class.form == item and record.semester == semester.semester and record.subject.is_elective %}
+                                                        <tr style="text-align: center;">
+                                                            <td><h5>{{record.subject.name|upper}}</h5></td>
+                                                            <td><h5>{{record.grade}}</h5></td>
+                                                            <td><h5>{{record.remark}}</h5></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>  
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                        <hr>
+                        <div style="color: gray;">
+                            <h1 style="text-align: center; padding: 0; margin: 0;">F.K AZALETEY</h1>
+                            <h1 style="text-align: center; padding: 0; margin: 0;">(ASSISTANT HEADMASTER - ADMINISTRATION)</h1>
+                        </div>
+
+                    <div id="footer_content">Page <pdf:pagenumber />
+                        of <pdf:pagecount /> || 
+                        <i> &copy; Ketasco Computing Systems.</i>
+                        <i>{{current_time}}</i>    
+                    </div>
+                
+                {% if not forloop.last %}
+                    <pdf:nextpage />
+                {% endif %}
+            {% endfor %}
+		</div>		
+	{% endif %}	
+	</body>
+</html>

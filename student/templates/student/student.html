@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mdb.min.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/student_styles.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/res_student_styles.css' %}"/>
+    <link rel="icon" type="image/png" href="{{request.school.crest.url}}">
+
+    <title>STUDENT PORTAL</title>
+
+</head>
+<body class="student-home">
+    <div class="card card-responsive">
+        <div class="flex">
+            <h2>Hi, {{request.user.student.name|upper}} </h2>
+            {% if request.school.crest %}
+                <p class="text text-right"><img height="55" width="50" src="{{request.school.crest.url}}" alt="crest"></p>
+            {% endif %}
+        </div>
+       
+        <hr>
+        <h3 class="text text-center">STUDENT PORTAL</h3>
+        <form class="report-detail-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="academic_year">Academic Year</label>
+                <select class="form-control" name="academic_year" id="academic_year" required>
+                    <option value="">--- Select Academic Year ---</option>
+                        {% for academic_year in academic_years %}
+                        <option value="{{academic_year.academic_year}}">{{academic_year.academic_year}}</option>
+                        {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="semester">Semester</label>
+                <select class="form-control" name="semester" id="semester" required>
+                    <option value="">--- Select Semester ---</option>
+                    {% for semester in semesters %}
+                            <option value="{{semester.semester}}">{{semester.semester}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <input type="hidden" id="student" name="student" required value="{{student.student_id}}">
+            <div class="form-group">
+            <label for="semester">Class</label>
+                <select class="form-control" name="student_class_id" id="student_class_id" required>
+                    <option value="">--- Select Class ---</option>
+                    {% for class in classes %}
+                            <option value="{{class.student_class_id}}">{{class.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Print</button>
+        </form>
+        <hr>
+        <form action="{% url 'pdf:student_transcript' %}">
+            <input class="form-control" type="hidden" name="student_id" value="{{request.user.student.student_id}}" required>
+            <button class="btn btn-primary" type="submit">TRANSCRIPT</button>
+        </form>
+        <p><a class="btn btn-info" href="{% url 'accounts:logout' %}?next=/student">Logout</a></p>
+    </div>
+
+    {% load static %}
+    <script defer src="{% static 'js/student_app.js' %}"></script>
+</body>
+</html>

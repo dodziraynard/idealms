@@ -1,0 +1,28 @@
+.record-input{
+    overflow: auto;
+    padding: 1%;
+}
+
+.sml{
+    min-width: 100px;
+}
+
+.record-display{
+    position: fixed;
+    min-width: 40vw;
+    font-size: 1em;
+    top: 50px;
+    z-index: 10;
+    padding: 0;
+    overflow: auto;
+    max-height: 40vh;
+
+    *{
+        font-size: 1em !important;
+    }
+}
+
+.table-header{
+    background-color: #d4d4d4; 
+    text-align: center;
+}

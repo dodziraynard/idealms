@@ -1,0 +1,73 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Map teacher to subject {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>ASSIGN A SUBJECT TO A TEACHER</h3>
+            <div class="add-form card card-responsive">
+                {% if teacher_subject %}
+                    <a href="{{teacher_subject.file.url}}" download="download" class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                {% endif %}
+                <h4>UPLOAD EXCEL SHEET</h4>
+                <form action="" method="POST" enctype="multipart/form-data" id="teacherSubjectForm"> 
+                    {% csrf_token %}
+                    
+                    <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</label>
+                    <input id="files"  
+                            type="file" 
+                            name="files" 
+                            accept=".xls,.xlsx"
+                            style="display: none;" required onchange="submitForm('teacherSubjectForm')">
+                    <!-- <button type="submit" class="btn btn-primary"> <h5><span class="fa fa-upload"></span> Upload</h5></button> -->
+                </form>
+            </div>
+        </div>
+
+        <div class="content">           
+            <hr>
+            <div class="body card card-responsive">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong>{{error_message}}.
+                    </div>
+                {% endif %}
+                
+                <div class="search-content">
+                    <form action="" method="GET">
+                        <input type="search" name="staff_id" placeholder="Search IDs" value="{{staff_id}}">
+                        <button type="submit"><span class="fa fa-search"></span></button>
+                    </form>
+                </div>
+
+                {% if teaches %}
+                <table class="table table-striped table-hover">
+                    <thead class="">
+                        <tr>
+                            <th><h5>SUBJECT</h5></th>
+                            <th><h5>CLASS</h5></th>
+                            <th><h5>TEACHER</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in teaches %}
+                       <tr>
+                            <td><h5>{{item.subject.name|upper}}</h5></td>
+                            <td><h5>{{item.student_class.name|title}}</h5></td>
+                            <td><h5>{{item.staff.name|title}}</h5></td>
+                       </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% else %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>No record found!</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

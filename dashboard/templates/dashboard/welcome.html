@@ -1,0 +1,151 @@
+{% extends "dashboard/base_template.html" %}
+{% block title %} WELCOME {% endblock title %}
+{% block menu %}{% endblock menu %}
+
+{% block body %}
+<div class="content welcome row">
+    <div class="col-md-4 card">
+        <h1 class="alternate-colors">WELCOME, {{request.user.username|upper}}</h1>
+
+        <div class="profile">
+            <img src="/resources/assets/images/avatar.png" alt="">
+        </div>
+        <hr>
+        <a class="btn btn-info" href="{% url 'accounts:logout' %}"><p> <span class="fa fa-sign-out"> </span> Logout</p></a>
+        <a class="btn btn-info" href="{% url 'dashboard:profile' %}"><p> <span class="fa fa-user"> </span> Profile</p></a>
+    </div>
+
+    <div class="col-md-8 row card-responsive">
+        <h1 class="alternate-colors">SYSTEM CONFIGURATIONS</h1>
+        <a href="{% url 'dashboard:staff' %}">
+            <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-user"></span></h1>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                    <h3 class="home-header alternate-colors">
+                        STAFF
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:subjects' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-book"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                        SUBJECTS
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:courses' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-tasks"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                        COURSES
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:student_classes' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-vcard-o"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                        CLASSES
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:students' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-users"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                        STUDENTS
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:teacher_subjects' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-users"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                        ASSIGN SUBJECTS
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:house_masters' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-user"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                        HOUSE MASTERS
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="{% url 'dashboard:grading_system' %}">
+           <div class="col-md-5 row home-menu-item">
+                <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                    <h1><span class="fa fa-gear"></span></h1>
+                </div>
+                 <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                     <h3 class="home-header alternate-colors">
+                       GRADING SYSTEM
+                    </h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="/superuser/school/school/1/change/">
+            <div class="col-md-5 row home-menu-item">
+                 <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                     <h1><span class="fa fa-mortar-board"></span></h1>
+                 </div>
+                  <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                      <h3 class="home-header alternate-colors">
+                        MY SCHOOL
+                     </h3>
+                 </div>
+             </div>
+         </a>
+
+         <a href="{% url 'sms:index' %}">
+            <div class="col-md-5 row home-menu-item">
+                 <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                     <h1><span class="fa fa-envelope"></span></h1>
+                 </div>
+                  <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                      <h3 class="home-header alternate-colors">
+                        SMS
+                     </h3>
+                 </div>
+             </div>
+         </a>
+    </div>
+</div>
+{% endblock body %}

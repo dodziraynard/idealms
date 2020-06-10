@@ -1,0 +1,78 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block username %} {{request.user.staff.get_short_name}} {% endblock username %}
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <p>ACADEMIC RECORDS - HOUSE MASTER</p>
+        </div>
+        <div class="content">
+            
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                {% if message %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info! </strong> {{message}}.
+                    </div>
+                {% endif %}
+
+                <div class="records">
+                    {% if warnings %}
+                     {% for warning in warnings %}
+                        <div class="alert alert-warning fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error!</strong> {{warning}}.
+                        </div>
+                     {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% if not form_1_remark or not form_2_remark or not form_3_remark %}
+                <h3 class="text text-danger">Pending</h3>
+                {% if not form_1_remark %}
+                   <h4 class="text text-warning">Form 1 {{request.school.current_semester}} Remarks</h4>
+                {% endif %}
+
+
+                {% if not form_2_remark %}
+                    <h4 class="text text-warning">Form 2 {{request.school.current_semester}} Remarks</h4>
+                {% endif %}
+
+                {% if not form_3_remark %}
+                    <h4 class="text text-warning">Form 3 {{request.school.current_semester}} Remarks</h4>
+                {% endif %}
+                {% endif %}
+
+                <hr>
+                {% if form_1_remark or form_2_remark or form_3_remark %}
+                <h3 class="text text-success">Submitted</h3>
+                {% if form_1_remark %}
+                   <h4 class="text text-success">Form 1 {{request.school.current_semester}} Remarks</h4>
+                {% endif %}
+
+
+                {% if form_2_remark %}
+                    <h4 class="text text-success">Form 2 {{request.school.current_semester}} Remarks</h4>
+                {% endif %}
+
+                {% if form_3_remark %}
+                    <h4 class="text text-success">Form 3 {{request.school.current_semester}} Remarks</h4>
+                {% endif %}
+                {% endif %}
+
+                <hr>
+                <div>
+                    <a class="btn btn-primary" href="{% url 'staff:input_house_master_remarks' %}">Enter Remarks</a>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

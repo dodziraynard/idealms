@@ -1,0 +1,141 @@
+// Colors
+$blue: #1593dd;
+$red: #d72719;
+$gold: #c69f5a;
+$shadow: rgb(214, 214, 214);
+
+body{
+    user-select: none;
+    background:linear-gradient(rgb(0, 133, 241), rgb(9, 224, 196));
+    height: 100vh;
+    width: 100vw;
+}
+.main{
+    height: 100vh;
+    width: 100vw;
+    background: url("/assets/images/back.png");
+    position: fixed;
+
+    .intro-text{
+        color: whitesmoke;
+        text-align: center;
+        font-size: 1.5em;
+        position: absolute;
+        top: 1vh;
+        width: 100%;
+        transition: 1s all ease-in-out;
+        transform: translateY(-200%);
+    } 
+}
+
+.undo-transform{
+    transform: translateY(0) !important;
+}
+
+form{
+    width: 90%;
+    margin: 25vh auto;
+    background: white;
+    box-shadow: 0px 0px 20px rgb(9, 181, 224);
+    border-radius: 10px;
+    user-select: none;
+    transition: 1s all ease-in-out;
+    transform: translateY(200%);
+    
+   .form-group{
+        border: .5px solid $shadow;
+        border-radius: 10px;
+        display: flex;
+        
+        span{
+            font-size: 2em;
+            padding: 5px;
+            width: 45px;
+        }
+        input{
+            padding: 8px;
+            width: 85%;
+            background: none;
+            border: none;
+            outline: none;
+            margin: 0;
+        }
+
+        &:hover{
+            box-shadow: 0px 0px 10px $shadow;
+        }
+   }
+
+   .submit{
+      text-align: center;
+      padding: 5px;
+      
+      button{
+          background: white;
+          border: 1px solid $shadow;
+          outline: none;
+          padding: 10px 20px;
+          border-radius: 10px;
+          font-size: 1.3em;
+        
+          &:hover{
+            box-shadow: 0px 0px 10px $shadow;
+          }
+      }
+   }
+}
+
+.header{
+    text-align: center;
+    background: $blue;
+    padding: 5px;
+    font-size: 2em;
+    color: white;
+    font-weight: 600;
+}
+
+.user-tabs{
+    display: flex;
+    justify-content: space-around;
+    background: rgb(80, 193, 238);
+    height: 50px;
+    user-select: none !important;
+    
+    .tab{
+        padding: 4px;
+        cursor: pointer;
+        transition: .2s all cubic-bezier(0.075, 0.82, 0.165, 1);
+        text-transform: uppercase;
+        text-align: center;
+        
+        &:hover{
+            transform: translateY(2px);
+            border-bottom: 5px solid purple;
+            border-radius: 5px;
+            box-shadow: 0px 3px 5px $shadow;
+        }
+    }
+
+    .active-tab{
+        transform: translateY(2px);
+        border-bottom: 5px solid purple;
+        border-radius: 5px;
+        box-shadow: 0px 5px 5px rgb(80, 193, 238);
+        color:white;
+    }
+}
+.form-body{
+    padding: 10px;
+    transition: .2s all ease;
+    width: 80%;
+    margin: auto;
+
+    .selected-user{
+        border-bottom: 2px solid $shadow;
+        text-transform: uppercase;
+    }
+}
+
+.toggle-form-body{
+    transform: rotateY(360deg);
+}

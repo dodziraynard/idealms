@@ -1,0 +1,41 @@
+{% if records %}
+<div class="alert alert-info fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <p>{{student.name|upper}}</p>
+    <p>{{record_class}}</p>
+    <p>{{semester}} {{academic_year}} Academic Year</p>
+    <input type="hidden" id="display_student_id" value="{{student.student_id}}">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>C.S</th>
+                <th>E.S</th>
+                <th>Total</th>
+                <th>Grade</th>
+                <th>Rem</th>
+                <th>Pos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{record.subject|title}}</td>
+                <td>{{record.class_score}}</td>
+                <td>{{record.class_score}}</td>
+                <td>{{record.total}}</td>
+                <td>{{record.grade}}</td>
+                <td>{{record.remark}}</td>
+                <td>{{record.rank}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Info!</strong> No record found.
+</div>
+{% endif %}

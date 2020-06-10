@@ -1,0 +1,61 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | SMS {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>
+                <a href="{% url 'sms:index' %}">SMS </a> >>
+                SMS PREVIEW
+            </h3>
+        </div>
+
+        <div class="content"> 
+            {% if error_message %}
+                <div class="alert alert-warning fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error! </strong>{{error_message}}.
+                </div>
+            {% endif %}
+
+            {% if message %}
+                <div class="alert alert-info fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Info! </strong>{{message}}.
+                </div>
+            {% endif %}
+            
+            <form action="{% url 'sms:index' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="academic_year" value="{{academic_year}}">
+                <input type="hidden" name="semester" value="{{semester}}">
+                <input type="hidden" name="student_id" value="{{student_id}}">
+                <input type="hidden" name="class_id" value="{{class_id}}">
+                <input type="hidden" name="student_class" value="{{student_class}}">
+                {% if student_sms %}
+                    <div class="m-2" style="margin:5%;">
+                        <button type="submit" class="btn btn-primary">SEND CHECKED</button>
+                        <br>
+                        <label for="">All</label>
+                        <input type="checkbox" id="toggle-student-check" checked>
+                        {% for student, sms in student_sms.items %}
+                            <h4>{{student.name}} [{{student.parent_sms}}] <input type="checkbox" name="{{student.student_id}}" class="check_student" checked></h4>
+                            
+                            <pre>{{sms}}</pre>
+                            {% for s, link in student_link.items %}
+                                {% if s == student %}
+                                    <a href="{{link}}" target="_blank">{{link}}</a>
+                                    <br>
+                                    <br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                <h3 class="text text-danger">No record found</h3>
+                {% endif %}
+                
+            </form>
+        </div>
+    </div>
+{% endblock body %}

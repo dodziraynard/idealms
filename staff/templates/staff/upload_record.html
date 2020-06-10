@@ -1,0 +1,34 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <p>ACADEMIC RECORDS</p>
+        </div>
+
+        <div class="content">
+            
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error! </strong> {{error_message}}.
+                    </div>
+                {% endif %}
+
+                <div class="records">
+                   <h3>Upload record for <b>{{record_request.name}}</b></h3>
+                   <h3>{{record_request.form.name}}</h3>
+
+                   <form action="{% url 'teacher:upload_record' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" value="{{record_request.id}}" name="request_id" hidden readonly required>
+                        <input type="file" name="file" required>
+                        <button type="submit">Upload</button>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,53 @@
+{% if students_remark %}
+<table class="table table-hover">
+    <thead class="table-header">
+        <tr>
+            <th><h5>S/N</h5></th>
+            <th><h5>STUDENT ID</h5></th>
+            <th><h5>NAME</h5></th>
+            <th><h5>CLASS</h5></th>
+            <th><h5>REMARK</h5></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student, remark in students_remark.items %}
+        <tr>
+            <td style="background-color: #d4d4d4;"><h5>{{forloop.counter}}</h5></td>
+            <td><h5>{{student.student_id}}</h5></td>
+            <td><h5>{{student.name|upper}}</h5></td>
+            <td><h5>{{student.student_class|upper}}</h5></td>
+            <td><h5>{{remark.remark}}</h5></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if sheet %}
+<hr>
+<form id="remarkForm"
+        action="{% url 'staff:upload_house_master_remarks' %}" 
+        method="POST" enctype="multipart/form-data">
+
+        <a class="btn btn-info" href="{{sheet.file.url}}" download><span class="fa fa-download"></span> Download</a>
+        {% csrf_token %}
+        <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</label>
+        <input id="files"  
+                type="file" 
+                name="file" 
+                accept=".xls,.xlsx"
+                style="display: none;" required onchange="submitForm('remarkForm')">
+   </form>
+{% endif %}
+
+{% else %}
+<h4 class="text text-warning">No students found</h4>
+{% endif %}
+
+
+
+
+
+
+
+
+

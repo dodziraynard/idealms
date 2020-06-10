@@ -1,0 +1,70 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Academic Records {% endblock title %}
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>GENERATE STUDENT TRANSCRIPT</h3>
+        </div>
+        <div class="content">
+            
+            <div class="body">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                {% if message %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Info! </strong> {{message}}.
+                    </div>
+                {% endif %}
+
+                <div class="records">
+                    <div class="tabs">
+                        <ul class="tab-header">
+                            <li class="tab" data-toggle="student">STUDENT</li>
+                            <li class="tab" data-toggle="class" >CLASS</li>
+                        </ul>
+        
+                        <div class="tab-body">
+                            <div class="body default-tab student">
+                                <form class="card card-responsive" action="{% url 'pdf:student_transcript' %}">
+                                    <label for="student">STUDENT ID</label>
+                                    <input class="form-control" type="text" name="student_id" required>
+                                    <button class="btn btn-primary" type="submit">Print</button>
+                                </form>
+                            </div>
+
+                            <div class="body class">
+                                <form class="card card-responsive" action="{% url 'pdf:class_transcript' %}">
+                                    <label for="semester">CLASS</label>
+                                    <select class="form-control" name="class_id"required>
+                                        <option value="">--- Select Class ---</option>
+                                        {% for class in classes %}
+                                             <option value="{{class.student_class_id}}">{{class.name}}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <br>
+                                    <button class="btn btn-primary" type="submit">Print</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                </div>
+
+                <div id="student-report">
+                {% if reports %}
+                
+                
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

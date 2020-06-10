@@ -1,0 +1,104 @@
+{% if students_records %}
+<!-- CSRF -->
+{% csrf_token %}
+
+<input type="hidden" value="{{academic_year}}" id="selected_academic_year">
+<input type="hidden" value="{{semester}}" id="selected_semester">
+<input type="hidden" value="{{subject_name}}" id="selected_subject_name">
+
+<h4>No. on Roll: {{students.count}}</h4>
+<input type="hidden" id="roll_no" value="{{students.count}}">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><h5>STUDENT ID</h5></th>
+            <th><h5>NAME</h5></th>
+            <th><h5>CLASS SCORE</h5></th>
+            <th><h5>EXAM SCORE</h5></th>
+            <th><h5>TOTAL</h5></th>
+            <th><h5>GRADE</h5></th>
+            <th><h5>REMARK</h5></th>
+            <th><h5>POSITION</h5></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student, record in students_records.items %}
+        <tr class="tr-{{student.student_id}}">
+            <td><h5>{{student.student_id}}</h5></td>
+            <td><h5>{{student.name|upper}}</h5></td>
+            <td>
+                <div class="inline">
+                    <input  type="number"
+                            onchange="completeRecord('{{student.student_id}}')" 
+                            name="class_score" 
+                            id="{{student.student_id}}class_score"
+                            class="sml form-control"
+                            value="{{record.class_score}}">
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input type="number"
+                            onchange="completeRecord('{{student.student_id}}')" 
+                            id="{{student.student_id}}exam_score"
+                            name="exam_score" 
+                            class="sml form-control"
+                            value="{{record.exam_score}}">
+            <td>
+                <div class="inline">
+                    <input type="number"
+                        id="{{student.student_id}}total"
+                        name="total" 
+                        readonly
+                        data-student_id="{{student.student_id}}"
+                        class="sml form-control"
+                        value="{{record.total}}">
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input type="text" 
+                            id="{{student.student_id}}grade"
+                            name="grade"
+                            readonly 
+                            class="sml form-control"
+                            value="{{record.grade}}">
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input type="text" 
+                            id="{{student.student_id}}remark"
+                            name="remark" 
+                            readonly
+                            class="sml form-control"
+                            value="{{record.remark}}">
+                </div>
+            </td>
+
+            <td>
+                <div class="inline">
+                    <input type="text" 
+                        id="{{student.student_id}}position"
+                        name="position"
+                        readonly
+                        class="sml form-control"
+                        value="{{record.position}}">
+
+                        <span style="display: none;" class="btn btn-success fa fa-save save-record"
+                            data-student_id="{{student.student_id}}"
+                            onclick="saveRecord('{{student.student_id}}')"></span>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<button class="btn btn-success" onclick="saveAllSubjectRecords()"><h6><span class="fa fa-save"></span> SAVE ALL</h6></button>
+{% else %}
+<h4 class="text text-warning">No students found</h4>
+{% endif %}

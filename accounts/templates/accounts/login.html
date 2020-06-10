@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mdb.min.css'%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/accounts_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/res_accounts_styles.css' %}">
+    <link rel="icon" type="image/png" href="{{request.school.crest.url}}">
+
+    <title>LMS | Login</title>
+</head>
+<body>
+    <div class="main">
+        <div class="intro-text">
+            <p>{{request.school.name|upper}}</p>
+            <p>LEARNING MANAGEMENT SYSTEM</p>
+        </div>
+        <form action="?next={{redirect_link}}" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="header">
+                <h4>LMS | LOGIN</h4>
+            </div>
+            <div class="user-tabs">
+                <div class="tab {% if not user_type %} active-tab {% elif user_type == 'admin' %} active-tab {% endif %}" data-user="Admin">
+                    <h5>Admin</h5>
+                </div>
+
+                <div class="tab {% if user_type == 'house master' %} active-tab {% endif %}" data-user="House Master">
+                    <h5>House Master</h5>
+                </div>
+
+                <div class="tab {% if user_type == 'form teacher' %} active-tab {% endif %}" data-user="Form Teacher">
+                    <h5>Form Teacher</h5>
+                </div>
+
+                <div class="tab {% if user_type == 'teacher' %} active-tab {% endif %}"  data-user="Teacher">
+                    <h5>Subject Teacher</h5>
+                </div>
+
+            </div>
+            <div class="form-body">
+                <input type="text" name="user_type" id="user_type" {% if not user_type %} value="admin" {% else %} value="{{user_type}}" {% endif %} hidden readonly required>
+                <h4 class="selected-user">{% if not user_type %} Admin {% else %} {{user_type}} {% endif %}</h4>
+                <span class="text text-danger text-center error-message">{{error_message}}</span>
+                
+                <div class="form-group">
+                    <span class="fa fa-user"></span>
+                    <input type="text" name="username" placeholder="Username">
+                </div>
+    
+                <div class="form-group">
+                    <span class="fa fa-key"></span>
+                    <input type="password" name="password" placeholder="Password / PIN">
+                </div>
+                <div class="submit">
+                    <button type="submit">Login</button>
+                </div>
+
+                <p class="text text-center btn badge badge-info"><a href="{% url 'student:student' %}" style="color: white">A Student?</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/accounts_app.js' %}"></script>
+</body>
+</html>

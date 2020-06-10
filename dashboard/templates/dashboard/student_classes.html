@@ -1,0 +1,76 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Classes {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>CLASSES</h3>
+            <div class="add-form card card-responsive">
+                <a href="/resources/assets/sheets/classes.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                <h4>ADD CLASSES FORM EXCEL SHEET</h4>
+
+                <form action="{% url 'dashboard:student_classes' %}" method="POST" enctype="multipart/form-data" id="classForm"> 
+                    {% csrf_token %}
+                    <!-- <input type="file" name="files" required>
+                    <button type="submit" class="btn btn-primary"> <h5><span class="fa fa-upload"></span> Upload</h5></button> -->
+                    <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</label>
+                    <input id="files"  
+                            type="file" 
+                            name="files" 
+                            accept=".xls,.xlsx"
+                            style="display: none;" required onchange="submitForm('classForm')">
+                </form>
+            </div>
+        </div>
+
+        <div class="content">
+           
+            
+            <hr>
+            <div class="body card card-responsive">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong>{{error_message}}.
+                    </div>
+                {% endif %}
+                
+                <div class="search-content">
+                    <form action="" method="GET">
+                        <input type="search" name="student_class_id" placeholder="Search IDs" value="{{student_class_id}}">
+                        <button type="submit"><span class="fa fa-search"></span></button>
+                    </form>
+                </div>
+
+                {% if student_classes %}
+                <table class="table table-striped table-hover">
+                    <thead class="">
+                        <tr>
+                            <th><h5>CLASS ID</h5></th>
+                            <th><h5>NAME</h5></th>
+                            <th><h5>FORM MASTER</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for class in student_classes %}
+                       <tr href="?">
+                            <td><h5>{{class.student_class_id|upper}}</h5></td>
+                            <td><h5>{{class.name|title}}</h5></td>
+                            <td><h5>{{class.class_teacher.name|title}}
+                                <p><small>{{class.form_teacher.staff_id}}</small></p>
+                            </h5></td>
+                       </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% else %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>No record found!</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

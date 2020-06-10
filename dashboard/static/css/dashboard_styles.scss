@@ -1,0 +1,614 @@
+@import "variables.scss";
+
+body{
+    background: url("/resources/assets/images/back.png");
+
+    #alert{
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        position: fixed;
+        top: 1px;
+        width: 150px;
+        z-index: 100;
+        right: 35vw;
+        border-radius: 100px;
+        padding: 2px 20px;
+        text-align: center;
+    }
+    a{
+        color: inherit;
+        text-decoration: none;
+
+        &:hover{
+            color: inherit;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px !important;
+        background-color: white;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background: $blue;
+    }
+
+    #loading{
+        border-right: 5px solid rgb(35, 94, 255);
+        border-left: 5px dashed rgb(230, 220, 90);
+        border-radius: 100%;
+        height: 0;
+        width: 0;
+        position: fixed;
+        top: 0;
+        margin-left: 40%;
+        z-index: 100;
+        animation-name: loading;
+        animation-duration: .5s;
+        animation-iteration-count: infinite;
+        transition: .5 all cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    }
+
+    .show-loading{
+        height: 50px !important;
+        width: 50px !important;
+    }
+
+    @keyframes loading{
+        from{
+            transform: rotateZ(0deg);
+        }
+        to{
+            transform: rotateZ(360deg);
+        }
+    }
+}
+
+
+.desktop-only{
+    display: none;
+}
+.banner{
+    padding: 5px;
+    background-color: red;
+    box-shadow: 0px 0px 3px $shadow;
+    border-radius: 100%;
+    width: 20px;
+    height: 15px;
+}
+
+.card{
+    box-shadow: 0px 0px 5px gray;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: white;
+
+    table{
+        overflow-x: auto;
+    }
+}
+
+.card-responsive{
+    margin: 10px auto;
+    width: 90%;
+}
+
+.h-scroll{
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+        height: 10px !important;
+        background-color: rgb(233, 245, 248);
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background: $blue;
+    }
+}
+
+.inline{
+    display: flex;
+    margin: auto 5px;
+}
+
+.btn{
+    border-radius: 5px;
+    font-size: 1em;
+}
+nav{
+    position: sticky;
+    top: 0px;
+    z-index: 50 !important;
+    width: 100% !important;
+
+    .row{
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .header{
+        height: 50px;
+        background: $blue;
+        padding: 10px;
+        border-bottom: 3px solid $gold;
+        color: rgb(248, 248, 248);
+        position: sticky;
+        top: 0;
+        display: flex;
+        box-shadow: 0px 3px 5px $shadow;
+        z-index: 5;
+        width: 100%;
+    }
+
+    .menu-bar{
+        width: 53px;
+        font-size: 1.8em;
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .logo{
+        margin: auto;
+        // margin-left: 5%;
+        width: 50px;
+        display: flex;
+
+        img{
+            width: 30px;
+            margin: 4px;
+            height:35px;
+        }
+        .school-name{
+            display: none;
+        }
+    }
+
+    .user{
+        position: absolute;
+        right: 5%;
+        top: 0px;
+        display: flex;
+        
+        .notification{
+            margin: 10px;
+        }
+        .profile{
+            cursor: pointer;
+
+            img{
+                height: 35px;
+                width: 35px;
+                border-radius: 100%;
+            }
+
+            &:hover{
+                .profile-drop-down{
+                    height: 80px;
+                }
+            }
+        }
+
+        .profile-drop-down{
+            background: white;
+            margin-top: 5px;
+            transition: height .2s ease-in-out;
+            height: 0px;
+            box-shadow: 0px 0px 5px $shadow;
+            border-radius: 5px;
+            overflow: hidden;
+
+            p{  
+                padding: 5px;
+                a{ 
+                    color: rgb(51, 51, 51);
+                    text-decoration: none;
+                }
+                &:hover{
+                    background: lightblue;
+                }
+            }
+        }
+    }
+
+    .toggle-menu{
+        transform: translateX(0) !important;
+    }
+    .menu{
+        background: white;
+        position: absolute;
+        box-shadow: 0 2px 5px $shadow;
+        height: 90vh;
+        width: 300px;
+        padding-top: 10px;
+        transition: all .2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        transform: translateX(-100%);
+        overflow: auto;
+        
+        ul{
+            display: flex;
+            flex-direction: column;
+            list-style-type: none;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .menuitem{
+            padding: 15px;
+            font-size: 1.3em;
+
+            span{
+                margin-right: 15px;
+            }
+
+            &:hover{
+                background: lightblue;
+            }
+
+            a{
+                color: rgb(114, 114, 114);
+                text-decoration: none;
+            }
+        }
+
+        .drop-down{
+            &:hover{
+                background-color: white;
+                .drop-down-item{
+                    height: 240px;
+                    overflow-y: auto;
+                }
+            }
+        }
+
+        .drop-down-item{
+            background: white;
+            margin-top: 12px;
+            transition: height .2s ease-in-out;
+            height: 0px;
+            box-shadow: 0px 5px 5px $shadow;
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 2;
+            width: max-content;
+            
+            &::-webkit-scrollbar {
+                width: 2px;
+                background: $blue;
+            }
+            
+            p{
+                padding: 10px;
+                margin: 0;
+                &:hover{
+                    background: lightblue;
+                }
+            }
+        }
+    
+    }
+}
+
+.main-body{
+    background: white;
+    width: 90%;
+    margin: 10px auto;
+    padding: 0;
+    box-shadow: 0px 0px 5px $shadow;
+}
+
+.header{
+    background: rgb(242, 248, 250);
+    padding: 5px;
+    font-weight: 600;
+    color: rgb(65, 65, 65);
+}
+
+// TEACHERS FILE
+.content{
+    min-height: 80vh;
+
+    .body{
+        padding: 0px 10px;
+    }
+
+    .add-form{
+        padding: 4px;
+        border: .5px dotted $shadow;
+        form{
+            display: flex;
+            button{
+                background-color: white;
+                border: .5px solid $shadow;
+                outline: none;
+                padding: 5px;
+                border-radius: 5px;
+                
+                &:hover{
+                    box-shadow: 0px 0px 5px $shadow;
+                }
+            }
+        }
+    }
+    .search-content{
+        width: 90%;
+        margin: auto;
+        
+        form{
+            background: white;
+            display: flex;
+            margin: 5px;
+            border: .5px solid $shadow;
+            border-radius: 50px;
+        
+
+            &:hover{
+                box-shadow: 0px 0px 5px $shadow;
+            }
+            input{
+                background: none;
+                outline: none;
+                flex-grow: 1;
+                border: none;
+                padding: 1em 1em 1em 2em;
+
+            }
+            button{
+                background: none;
+                outline: none;
+                border: none;
+                border-left: .5px solid $shadow;
+                padding: 0px 20px;
+                border-top-right-radius: 50px;
+                border-bottom-right-radius: 50px;
+
+                &:hover{
+                    background: rgb(230, 230, 230);
+                }
+            }
+        }
+    }
+}
+
+// RECORDS FILE
+.tab-header{
+    list-style-type: none;
+    display: flex;
+    background: rgb(228, 255, 215);
+    padding: 5px;
+    height: 50px;
+    // box-shadow: 0px 0px 5px $shadow;
+
+    li{
+        padding: 5px;
+        margin: 0 20px;
+        cursor: pointer;
+
+        &:hover{
+            border-bottom: 3px solid $gold;
+        }
+    }
+}
+
+.tab-body{
+    .body{
+        transform: translateX(-110%);
+        position: absolute;
+        width: 90%;
+        // transition: all .2s ease-in-out;
+        padding: 5px 10px;
+        background: white;
+        box-shadow: 0px 0px 5px $shadow;
+    }
+}
+
+.tab2-body{
+    transform: translateX(-110%);
+    position: absolute;
+    width: 90%;
+    // transition: all .2s ease-in-out;
+    padding: 5px 10px;   
+    background: white;
+}
+
+.toggle-user-request{
+    box-shadow: 0px 1px 1px $shadow;
+    margin-bottom: 10px;
+
+    button{
+        background: white;
+        outline: none;
+        border: none;
+    }
+}
+
+.active-tab{
+    border-bottom: 3px solid purple !important;
+}
+.show-tab-body{
+    transform: translateX(0) !important;
+}
+
+// Welcome File
+.home-menu-item{
+    margin: 20px 5px;
+    box-shadow: 0px 0px 4px gray;
+    transition: all .4s ease-in-out;
+    border-radius: 10px;
+    padding: 0px;
+    
+    &:hover{
+        box-shadow: 0px 0px 10px gray;
+        animation: bulge;
+        animation-duration: 1s;
+    }
+
+    @keyframes bulge {
+        0%{
+            transform: scale(1);
+        }
+
+        50%{
+            transform: scale(1.1);
+        }
+        100%{
+            transform: scale(1);
+        }
+    }
+
+    .icon{
+        background: $blue;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        color: white;
+        min-height: 100px;
+        border-right: 5px solid $gold;
+    }
+
+    .detail{
+        background-color: white;
+        min-height: 100px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+}
+
+.alternate-colors{
+    animation: colors;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes colors {
+    0%{
+        color: $blue;
+    }
+    20%{
+        color: rgb(64, 197, 230);
+    }
+    40%{
+        color: purple;
+    }
+    60%{
+        color: rgb(0, 140, 255);
+    }
+
+    80%{
+        transform: green;
+    }
+    100%{
+        color: rgb(224, 123, 41);
+    }
+}
+
+.welcome{
+    padding-left: 3%;
+    margin: 1%;
+
+    .profile{
+        width: 100%;
+
+        img{
+            width: 60%;
+            margin: auto 10%;
+            border-radius: 20px;
+        }
+    }
+}
+
+// PROFILE FILE
+.dp{
+    img{
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+        box-shadow: 0px 0px 5px $shadow;
+    }
+    width: 200px;
+    height: 200px;
+    border: .5px solid $shadow;
+    margin: auto;
+    border-radius: 100%;
+    
+}
+
+.right-panel{
+    position: fixed;
+    right: 1px;
+    top: 20vh;
+    display: flex;
+    z-index: 5;
+    transition: all .5s ease-in-out;
+
+    .icon{
+        height: 60px;
+        width: 60px;
+        font-size: 3em;
+        border-right: 1px solid $shadow;
+        box-shadow: -5px 0px 4px $shadow;
+        cursor: pointer;
+
+        span{
+            padding: 10px;
+            animation-name: rotate-icon;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes rotate-icon {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(180deg);
+            }
+            
+        }
+    }
+
+    .r-tab-header{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $shadow;
+
+        .r-header-item{
+            padding: 5px;
+            cursor: pointer;
+        }
+    }
+
+    .body{
+        background: white;
+        width: 250px;
+        padding: 5px;
+        overflow-y: auto;
+        height: 70vh;
+        box-shadow: 0px 0px 5px $shadow;
+
+        &::-webkit-scrollbar {
+            width: 5px !important;
+            background-color: white;
+        }
+    
+        &::-webkit-scrollbar-thumb{
+            background: $blue;
+        }
+    }
+    .panel-item{
+        background: white;
+        margin: 10px 0px;
+        padding: 5px;
+        box-shadow: 0px 0px 3px $shadow;
+        border-radius: 10px;
+        transition: box-shadow .1s ease-in-out;
+
+        &:hover{
+            box-shadow: 0px 0px 10px $shadow;
+        }
+    }
+}
+
+.hide-right-panel{
+    transform: translateX(250px);
+}

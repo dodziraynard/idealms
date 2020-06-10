@@ -1,0 +1,77 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | Subjects {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>SUBJECTS</h3>  
+            <div class="add-subject card card-responsive">
+                <a href="/resources/assets/sheets/subjects.xlsx" download class="btn btn-success btn-sm"><span class="fa fa-download"></span></a>
+                <h4>ADD SUBJECTS FROM EXCEL SHEET</h4>
+
+                <form action="{% url 'dashboard:subjects' %}" method="POST" enctype="multipart/form-data" id="subjectForm"> 
+                    {% csrf_token %}
+                    <label for="files" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</label>
+                    <input id="files"  
+                            type="file" 
+                            name="files" 
+                            accept=".xls,.xlsx"
+                            style="display: none;" required onchange="submitForm('subjectForm')">
+                    <!-- <button type="submit" class="btn btn-primary"><span class="fa fa-upload"></span> Upload</button> -->
+                </form>
+            </div>
+        </div>
+
+        <div class="content">
+            <hr>
+            <div class="body card card-responsive">
+                {% if error_message %}
+                    <div class="alert alert-warning fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> {{error_message}}.
+                    </div>
+                {% endif %}
+                
+                <div class="search-content">
+                    <form action="" method="get">
+                        <input type="search" name="subject_id" placeholder="Seach IDs" value="{{subject_id}}">
+                        <button type="submit"><span class="fa fa-search"></span></button>
+                    </form>
+                </div>
+
+                {% if subjects %}
+                <table class="table table-striped table-hover">
+                    <thead class="">
+                        <tr>
+                            <th><h5>SUBJECT ID</h5></th>
+                            <th><h5>NAME</h5></th>
+                            <th><h5>IS ELECTIVE</h5></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                       <tr href="?">
+                            <td><h5>{{subject.subject_id|upper}}</h5></td>
+                            <td><h5>{{subject.name|title}}</h5></td>
+                            <td><h5>
+                                {% if subject.is_elective %}
+                                    <span class="text text-success">YES</span>
+                                {% else %}
+                                    <span class="text text-info">NO</span>
+                                {% endif %}
+                            </h5></td>
+                    </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% else %}
+                    <div class="alert alert-info fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>No record found!</strong>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

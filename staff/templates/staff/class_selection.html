@@ -1,0 +1,46 @@
+{% extends "dashboard/base_template.html" %}
+{% block title %} WELCOME {% endblock title %}
+{% block menu %}{% endblock menu %}
+
+{% block body %}
+<div class="content welcome row">
+    <div class="col-md-4 card">
+        <h1 class="alternate-colors">WELCOME, {{request.user.last_name|upper}}</h1>
+
+        <div class="profile">
+            <img src="/resources/assets/images/avatar.png" alt="">
+        </div>
+        <hr>
+        <a class="btn btn-info" href="{% url 'accounts:logout' %}"><p> <span class="fa fa-sign-out"> </span> Logout</p></a>
+        <a class="btn btn-info" href="{% url 'dashboard:profile' %}"><p> <span class="fa fa-user"> </span> Profile</p></a>
+    </div>
+
+    <div class="col-md-8 row card-responsive">
+        {% if error_message %}
+            <div class="alert alert-warning fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> {{error_message}}.
+            </div>
+        {% endif %}
+        <h1 class="alternate-colors">CHOOSE YOUR CLASS</h1>
+        
+        {% for class in available_classes %}
+            <form action="{% url 'staff:select_class' subject.subject_id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="student_class_id" value="{{class.student_class_id}}">
+                <button type="submit" style="border:none; outline:none" class="col-md-5 row home-menu-item">
+                    <div class="col-md-3 col-sm-3 col-xs-3 icon">
+                        <h1><span class="fa fa-book"></span></h1>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-9 detail">
+                        <h3 class="home-header alternate-colors">
+                            {{class.name}}
+                        </h3>
+                    </div>
+                </button>
+            </form>
+        {% endfor %}
+    </div>
+    <a class="btn btn-info" href="{% url 'staff:welcome' %}">BACK</a>
+</div>
+{% endblock body %}

@@ -1,0 +1,22 @@
+{% extends 'dashboard/base_template.html' %}
+{% block title %} KSHS | SMS {% endblock title %}
+
+{% block body %}
+    <div class="main-body">
+        <div class="header">
+            <h3>CONFIRM DELETE</h3>
+        </div>
+
+        <div class="content"> 
+            <form action="{% url 'sms:delete_sms' %}" method="POST">
+                {% csrf_token %}
+                    <h6>Confirm deletion of selected messages</h6>
+                    {% for sms in failedsms %}
+                    <input type="checkbox" name="failed_ids" class="failed_ids" value="{{sms.id}}" checked hidden>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}
